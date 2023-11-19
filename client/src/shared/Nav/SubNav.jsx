@@ -5,6 +5,7 @@ import './subNav.css'
 
 const SubNav = () => {
     return (
+
         <nav className='py-8 border-b hidden lg:block bg-slate-200 container mx-auto'>
             <ul className=' flex justify-evenly uppercase text-sm '>
                 <li className='font-bold '><NavLink className="hover:underline " to="/gadgets-and-electronics">Gadgets and Electronics</NavLink></li>
@@ -15,6 +16,7 @@ const SubNav = () => {
                 <li className='font-bold '><NavLink className="hover:underline " to="/gaming-and-entertainment">Gaming and Entertainment</NavLink></li>
             </ul>
         </nav>
+
     )
 }
 

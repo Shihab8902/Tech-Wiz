@@ -23,7 +23,7 @@ const Nav = () => {
 
 
     return (
-        <nav className=' container mx-auto py-10 lg:pt-10 lg:pb-5 flex justify-between items-center relative lg:border-b'>
+        <nav className=' container  mx-auto py-10 lg:pt-10 lg:pb-5 flex justify-between items-center relative lg:border-b'>
             <div className='hidden lg:flex items-center text-xl gap-4  '>
                 <Link className='hover:text-lime-500'><BiLogoFacebook /></Link>
                 <Link className='hover:text-lime-500'><BiLogoTwitter /></Link>
@@ -32,7 +32,7 @@ const Nav = () => {
             </div>
 
             <div>
-                <Link to="/" className='font-bold text-3xl'>Tech<span className='text-lime-500'>Wiz</span></Link>
+                <Link to="/" className='font-bold text-3xl'>Tech<span className='text-lime-600'>Wiz</span></Link>
             </div>
 
             <div >
@@ -43,7 +43,7 @@ const Nav = () => {
 
 
 
-                    <div className={`fixed top-0 right-0 overflow-y-auto  h-full w-full md:w-3/4 lg:w-1/3 p-8  bg-slate-900 transition-transform transform ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                    <div className={`fixed top-0 right-0 overflow-y-auto  h-full w-full md:w-3/4 lg:w-1/3 p-8 z-20  bg-slate-900 transition-transform transform ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
 
 
                         <button className="p-4 flex text-2xl pt-5  pr-5  text-white justify-end w-full" onClick={toggleMenu}>
