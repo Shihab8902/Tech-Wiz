@@ -32,7 +32,7 @@ const Nav = () => {
             </div>
 
             <div>
-                <Link to="/" className='font-bold text-3xl'>Tech<span className='text-lime-600'>Wiz</span></Link>
+                <Link to="/" className='font-bold text-3xl'>Tech<span className='text-[#36d636]'>Wiz</span></Link>
             </div>
 
             <div >
