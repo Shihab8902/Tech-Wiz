@@ -18,7 +18,7 @@ const Banner = () => {
 
     return <div>
         {
-            mostViewedBlogs?.length > 0 ? <div className="lg:my-10 container mx-auto">
+            mostViewedBlogs?.length > 0 ? <div className="lg:mt-10 mb-10 container mx-auto">
 
                 <div className="hidden lg:grid grid-cols-3 grid-rows-2 gap-2 h-[500px]">
 
