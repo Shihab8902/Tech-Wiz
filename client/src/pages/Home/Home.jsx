@@ -1,4 +1,5 @@
 
+
 import Nav from '../../shared/Nav/Nav'
 import SubNav from '../../shared/Nav/SubNav'
 import Banner from './Banner/Banner'
@@ -17,7 +18,6 @@ const Home = () => {
             <SubNav />
             <Banner />
             <RecentPosts />
-
 
         </div>
 

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import useBlogMostViewed from "../../../hooks/useBlogMostViewed"
 import { GoDotFill } from "react-icons/go";
+import NoDataLoader from "../../../components/Loader/NoDataLoader";
 
 
 
@@ -115,7 +116,7 @@ const Banner = () => {
 
                 </div>
 
-            </div> : ""
+            </div> : <NoDataLoader />
 
 
         }
