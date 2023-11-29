@@ -1,5 +1,5 @@
 const express = require("express");
-const { getBlog, postBlog, getLatestBlogs } = require("./controllers/blogController");
+const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
 
@@ -13,8 +13,11 @@ app.use(express.json());
 
 //Blog related apis
 app.get("/blogs", getBlog);
-app.get("/blogs/latest", getLatestBlogs);
+app.get("/blogs/mostViewed", getMostViewedBlogs);
+app.get("/blogs/recent", getLatestBlogs);
+app.get("/blogs/:id", getSpecificBlog);
 app.post("/blogs", postBlog);
+
 
 
 
