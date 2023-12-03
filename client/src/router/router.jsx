@@ -4,6 +4,7 @@ import Home from '../pages/Home/Home';
 import BlogView from '../pages/Blog view/BlogView';
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import SignUp from '../pages/Sign up/SignUp';
+import SignIn from '../pages/Sign in/SignIn';
 
 
 const axiosPublic = useAxiosPublic();
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
             {
                 path: "/signup",
                 element: <SignUp />
+            },
+            {
+                path: "/signin",
+                element: <SignIn />
             }
         ]
     }

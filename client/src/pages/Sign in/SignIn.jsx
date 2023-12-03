@@ -1,24 +1,42 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FiUser } from "react-icons/fi";
 import { MdOutlineMail } from "react-icons/md";
 import { IoIosLock } from "react-icons/io";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
-
+import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import { useForm } from "react-hook-form";
+import { Toaster, toast } from 'sonner';
 
 
-const SignUp = () => {
+const SignIn = () => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+    const captchaValue = watch("captcha");
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    useEffect(() => {
+        loadCaptchaEnginge(6);
+    }, []);
 
 
 
-    const onSubmit = (data) => console.log(data)
+
+    const onSubmit = (data) => {
+        //Validate the captcha
+        if (validateCaptcha(captchaValue) === false) {
+            return toast.error("Invalid captcha", {
+                classNames: {
+                    toast: "bg-red-500"
+                }
+            })
+        }
+        console.log(data)
+    }
+
 
 
 
@@ -34,14 +52,7 @@ const SignUp = () => {
                     <Link to="/" className='font-bold text-3xl'>Tech<span className='text-[#36d636]'>Wiz</span></Link>
                 </div>
 
-                <div>
-                    <label className='font-bold block mb-2' htmlFor="name">Name</label>
-                    <div className='flex items-center border-2 rounded-lg'>
-                        <span className='ml-3 text-xl text-gray-400'><FiUser /></span>
-                        <input {...register("name", { required: true })} className='w-full px-4 py-3 outline-none rounded-tr-lg rounded-br-lg font-bold text-black placeholder:font-normal' type="text" name="name" id="name" placeholder='Enter your name' />
-                    </div>
-                    {errors.name?.type === "required" && <p className='text-red-500 text-sm font-medium'>This field is required</p>}
-                </div>
+
 
 
                 <div className='my-5'>
@@ -68,28 +79,37 @@ const SignUp = () => {
                     {errors.password?.type === "minLength" && <p className='text-red-500 text-sm font-medium'>Password should be at least 6 character</p>}
                 </div>
 
-
                 <div className='my-5'>
-                    <label className='font-bold block mb-2' htmlFor="name">Photo</label>
-                    <div className=' border-2 rounded-lg '>
-                        <input {...register("image")} accept='image/*' className='w-full px-4 py-3' type="file" name="image" id="image" />
+                    <div>
+                        <LoadCanvasTemplate />
                     </div>
+                    <input {...register("captcha")} className='w-full px-4 py-3 outline-none border-2 rounded-lg font-bold text-black placeholder:font-normal' type="text" name="captcha" id="captcha" placeholder='Enter captcha' />
                 </div>
+
+
 
 
                 <div>
-                    <button type='submit' className='w-full bg-green-500 py-3 text-white font-semibold rounded-lg '>Sign Up</button>
+                    <button type='submit' className='w-full bg-green-500 py-3 text-white font-semibold rounded-lg '>Sign In</button>
                 </div>
 
-                <p className='text-center mt-5 font-medium'>Already have an account? <Link className='text-blue-500 hover:underline' to="/signin">Sign In</Link></p>
+                <p className='text-center mt-5 font-medium'>Don't have an account? <Link className='text-blue-500 hover:underline' to="/signup">Sign Up</Link></p>
 
             </form>
 
-
+            <Toaster
+                toastOptions={{
+                    style: {
+                        background: 'red',
+                        color: "white"
+                    },
+                    className: 'class',
+                }}
+            />
         </div>
 
 
     </div>
 }
 
-export default SignUp
+export default SignIn
