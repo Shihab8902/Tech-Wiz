@@ -2,6 +2,9 @@ const express = require("express");
 const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
+const { getUserByEmail, saveNewUser, getUserRole } = require("./controllers/userController");
+const { generateToken } = require("./controllers/tokenController");
+const verifyToken = require("./middlewares/verifyToken");
 
 
 //Middlewares
@@ -17,6 +20,19 @@ app.get("/blogs/mostViewed", getMostViewedBlogs);
 app.get("/blogs/recent", getLatestBlogs);
 app.get("/blogs/:id", getSpecificBlog);
 app.post("/blogs", postBlog);
+
+
+
+//User related apis
+app.get("/user", getUserByEmail);
+app.get("/userRole", verifyToken, getUserRole);
+app.post("/user", saveNewUser);
+
+
+
+
+//Authentication and Authorization related apis
+app.post("/jwt", generateToken);
 
 
 

@@ -5,6 +5,10 @@ import BlogView from '../pages/Blog view/BlogView';
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import SignUp from '../pages/Sign up/SignUp';
 import SignIn from '../pages/Sign in/SignIn';
+import PrivateRoute from '../components/Private route/PrivateRoute';
+import Dashboard from '../layouts/Dashboard/Dashboard';
+import Statistics from '../layouts/Dashboard/Admin/Statistics';
+import Profile from '../pages/Profile/Profile';
 
 
 const axiosPublic = useAxiosPublic();
@@ -30,6 +34,24 @@ export const router = createBrowserRouter([
             {
                 path: "/signin",
                 element: <SignIn />
+            },
+            {
+                path: "/profile",
+                element: <PrivateRoute>
+                    <Profile />
+                </PrivateRoute>
+            }
+        ]
+    },
+    {
+        path: "/dashboard",
+        element: <PrivateRoute>
+            <Dashboard />
+        </PrivateRoute>,
+        children: [
+            {
+                path: "/dashboard/statistics",
+                element: <Statistics />
             }
         ]
     }

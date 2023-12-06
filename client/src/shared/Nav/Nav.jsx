@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-
-
 import { BiMenu } from 'react-icons/bi';
 import { BiLogoFacebook } from 'react-icons/bi';
 import { BiLogoTwitter } from 'react-icons/bi';
@@ -10,16 +8,49 @@ import { AiOutlineMail } from 'react-icons/ai';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useContext } from 'react';
+import { UserContext } from '../../context/AuthProvider';
+import Swal from 'sweetalert2';
+import useGetUserRole from '../../hooks/useGetUserRole';
 
 
 
 const Nav = () => {
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const { user, userLogOut } = useContext(UserContext);
+    const { userRole } = useGetUserRole();
+
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
+
+
+    const handleUserSignOut = () => {
+        Swal.fire({
+            title: "Sign out?",
+            text: "Are you sure want to sign out?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "red",
+            cancelButtonColor: "green",
+            confirmButtonText: "Confirm"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                userLogOut()
+                    .then(() => {
+                        Swal.fire({
+                            position: "Center",
+                            icon: "success",
+                            title: "Signed out!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            }
+        });
+    }
 
 
     return (
@@ -38,7 +69,32 @@ const Nav = () => {
             <div >
                 <div className='flex item-center gap-6'>
                     <button className='text-2xl'><AiOutlineSearch /></button>
-                    <button className='text-2xl'><AiOutlineUserAdd /></button>
+                    {
+                        user ?
+                            <div className="dropdown dropdown-end">
+                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-8 rounded-full">
+                                        <img alt="Tailwind CSS Navbar component" src={user?.photoURL || "https://i.ibb.co/FKyGxmB/gray-photo-placeholder-icon-design-ui-vector-35850819.webp"} />
+                                    </div>
+                                </div>
+                                <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                                    <p className='text-center font-bold '>{user?.displayName || "User"}</p>
+
+                                    {
+                                        userRole === "admin" ? <Link to="/dashboard" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Dashboard</Link>
+                                            : userRole === "author" ? <Link to="/dashboard" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Dashboard</Link> :
+                                                <Link to="/profile" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Profile</Link>
+                                    }
+
+
+                                    <button onClick={handleUserSignOut} className='w-full font-semibold text-xs bg-red-500 text-white py-2 rounded-full'>Sign Out</button>
+                                </ul>
+                            </div>
+
+
+                            : <Link to="/signin"><button className='text-2xl'><AiOutlineUserAdd /></button></Link>
+
+                    }
                     <button onClick={toggleMenu} className='text-2xl'><BiMenu /></button>
 
 

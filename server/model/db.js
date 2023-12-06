@@ -26,7 +26,8 @@ run();
 
 const getModel = () => {
     const blogCollection = client.db("techwizDB").collection("blogs");
-    return { blogCollection };
+    const userCollection = client.db("techwizDB").collection("users");
+    return { blogCollection, userCollection };
 };
 
 module.exports = getModel;

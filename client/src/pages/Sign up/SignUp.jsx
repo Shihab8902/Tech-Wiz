@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import { FiUser } from "react-icons/fi";
@@ -8,20 +8,98 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
 
 import { useForm } from "react-hook-form";
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import { useContext } from 'react';
+import { UserContext } from '../../context/AuthProvider';
+import { updateProfile } from 'firebase/auth';
+import useSaveUserToDB from '../../hooks/useSaveUserToDB';
+import Swal from 'sweetalert2';
+
 
 
 const SignUp = () => {
 
+    const imageHostingAPIKey = import.meta.env.VITE_IMAGE_HOSTING_API_KEY;
+    const { createUser } = useContext(UserContext);
+    const navigate = useNavigate();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
+    const [isSigningUp, setIsSigningUp] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const axiosPublic = useAxiosPublic();
+    const { handleSaveUserToDB } = useSaveUserToDB();
+
+
+    //Create user
+    const createUserHandler = (name, image, email, password) => {
+
+        createUser(email, password)
+            .then(result => {
+                if (result.user) {
+                    updateProfile(result.user, {
+                        displayName: name,
+                        photoURL: image
+                    })
+                        .then(() => {
+                            const user = {
+                                name,
+                                email,
+                                image,
+                                role: "user",
+                                registeredAt: new Date()
+                            }
+                            handleSaveUserToDB(user);
+
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Signed up successfully! ",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setIsSigningUp(false);
+                            navigate("/")
+
+
+                        })
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "Error",
+                    text: error.message,
+                    icon: "error"
+                })
+            })
+    }
 
 
 
-    const onSubmit = (data) => console.log(data)
 
 
+    const onSubmit = (data) => {
+        setIsSigningUp(true);
+        if (data.image?.length > 0) {
+            const imageData = { image: data.image?.[0] }
+            axiosPublic.post(`https://api.imgbb.com/1/upload?key=${imageHostingAPIKey}`, imageData, {
+                headers: {
+                    "content-Type": "multipart/form-data"
+                }
+            })
+                .then(res => {
+                    if (res.data?.success) {
+                        const imageURL = res.data?.data.display_url;
+                        createUserHandler(data.name, imageURL, data.email, data.password);
+                    }
 
+                });
+        }
+        else {
+
+            createUserHandler(data.name, '', data.email, data.password);
+        }
+
+
+    }
 
 
     return <div className='p-3 md:p-6'>
@@ -78,7 +156,7 @@ const SignUp = () => {
 
 
                 <div>
-                    <button type='submit' className='w-full bg-green-500 py-3 text-white font-semibold rounded-lg '>Sign Up</button>
+                    <button type='submit' disabled={isSigningUp} className='w-full bg-green-500 py-3 text-white font-semibold rounded-lg '>{isSigningUp ? "Signing Up...." : "Sign Up"}</button>
                 </div>
 
                 <p className='text-center mt-5 font-medium'>Already have an account? <Link className='text-blue-500 hover:underline' to="/signin">Sign In</Link></p>
