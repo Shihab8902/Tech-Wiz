@@ -7,8 +7,9 @@ import SignUp from '../pages/Sign up/SignUp';
 import SignIn from '../pages/Sign in/SignIn';
 import PrivateRoute from '../components/Private route/PrivateRoute';
 import Dashboard from '../layouts/Dashboard/Dashboard';
-import Statistics from '../layouts/Dashboard/Admin/Statistics';
+
 import Profile from '../pages/Profile/Profile';
+import Compose from '../pages/Dashboard/Compose';
 
 
 const axiosPublic = useAxiosPublic();
@@ -50,8 +51,8 @@ export const router = createBrowserRouter([
         </PrivateRoute>,
         children: [
             {
-                path: "/dashboard/statistics",
-                element: <Statistics />
+                path: "/dashboard/compose",
+                element: <Compose />
             }
         ]
     }

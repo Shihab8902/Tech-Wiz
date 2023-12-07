@@ -1,12 +1,15 @@
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink, Outlet } from "react-router-dom"
 import { CgMenuLeftAlt } from "react-icons/cg";
 import { BsFillBarChartFill } from "react-icons/bs";
 import { FaRegListAlt } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
+import { FaQuoteRight } from "react-icons/fa";
 import { useContext } from "react";
 import { UserContext } from "../../context/AuthProvider";
 import { useState } from "react";
+
+import "./dashboard.css"
 
 const Dashboard = () => {
     const { user } = useContext(UserContext);
@@ -14,10 +17,11 @@ const Dashboard = () => {
 
     const navLinks = <>
 
-        <li className="font-semibold text-lg mb-3">  <NavLink to="/dashboard/statistics"><BsFillBarChartFill /> Statistics</NavLink></li>
-        <li className="font-semibold text-lg mb-3">  <NavLink to="/dashboard/statistics"><FaRegListAlt /> Manage Blogs</NavLink></li>
-        <li className="font-semibold text-lg mb-3">  <NavLink to="/dashboard/statistics"><FaUsers /> Manage Users</NavLink></li>
-        <li className="font-semibold text-lg mb-3">  <NavLink to="/dashboard/statistics"><FaPencilAlt /> Comments</NavLink></li>
+        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/statistics"><BsFillBarChartFill /> Statistics</NavLink></li>
+        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/compose"><FaPencilAlt /> Compose Blog</NavLink></li>
+        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/statistics"><FaRegListAlt /> Manage Blogs</NavLink></li>
+        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/statistics"><FaUsers /> Manage Users</NavLink></li>
+        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/statistics"><FaQuoteRight /> Comments</NavLink></li>
 
 
     </>
@@ -25,8 +29,6 @@ const Dashboard = () => {
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
-
-        // You can perform additional checks on the file, such as its type or size
 
         if (file) {
             const reader = new FileReader();
@@ -41,9 +43,12 @@ const Dashboard = () => {
     return <div className="drawer lg:drawer-open bg-gray-100">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content ">
-            {/* Page content here */}
             <div className=" lg:hidden  p-3">
                 <label htmlFor="my-drawer-2" className="text-3xl drawer-button "><CgMenuLeftAlt /></label>
+            </div>
+
+            <div className="m-4">
+                <Outlet />
             </div>
 
         </div>

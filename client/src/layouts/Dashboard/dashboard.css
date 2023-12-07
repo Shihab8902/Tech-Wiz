@@ -1,0 +1,5 @@
+.dashboard-link.active {
+    background-color: transparent !important;
+    color: blue !important;
+    text-decoration: none !important;
+}
