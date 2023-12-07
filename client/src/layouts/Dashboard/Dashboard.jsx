@@ -40,7 +40,7 @@ const Dashboard = () => {
     };
 
 
-    return <div className="drawer lg:drawer-open bg-gray-100">
+    return <div className="drawer lg:drawer-open bg-gray-100 container mx-auto">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content ">
             <div className=" lg:hidden  p-3">

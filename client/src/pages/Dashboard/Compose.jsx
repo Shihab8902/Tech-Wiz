@@ -2,31 +2,97 @@ import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import "./compose.css"
+import { useContext } from 'react';
+import { UserContext } from '../../context/AuthProvider';
+import { Toaster, toast } from 'sonner';
+import moment from 'moment/moment';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Compose = () => {
 
-    const [value, setValue] = useState('');
+    const { user } = useContext(UserContext);
 
+    const [body, setBody] = useState('');
+    const [category, setCategory] = useState('');
+    const [image, setImage] = useState('');
+
+    //Editor toolbar
     const modules = {
         toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['blockquote', 'code-block'],
+            ['bold', 'italic', 'underline', 'strike'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['blockquote', 'code-block'],
+            [{ 'script': 'sub' }, { 'script': 'super' }],
+            [{ 'indent': '-1' }, { 'indent': '+1' }],
             ['link'],
             ['clean'],
-
         ],
     };
 
+    const axiosPublic = useAxiosPublic();
 
-    const formats = ['header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block', 'list', 'link',]
 
 
-    return <div className="  p-5 bg-white shadow rounded-lg">
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        const title = e.target.title.value;
+
+
+        if (body.length < 1) {
+            return toast.error("Content not found! ", {
+                classNames: {
+                    toast: "bg-red-500"
+                }
+            })
+        }
+
+        const imageHostingAPIKey = import.meta.env.VITE_IMAGE_HOSTING_API_KEY;
+
+
+        axiosPublic.post(`https://api.imgbb.com/1/upload?key=${imageHostingAPIKey}`, { image: image }, {
+            headers: {
+                "content-Type": "multipart/form-data"
+            }
+        })
+            .then(res => {
+                if (res.data?.success) {
+                    const imageURL = res.data?.data.display_url;
+
+                    const blog = {
+                        title,
+                        category,
+                        image: imageURL,
+                        body,
+                        totalViews: 0,
+                        publisher: user?.displayName,
+                        publish_date: moment().format('MM/DD/YYYY')
+                    }
+
+                    console.log(blog);
+                }
+            })
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+    return <div className="  px-5 py-10 bg-white shadow rounded-lg">
         <h3 className="text-center font-semibold text-xl uppercase">Compose a new Blog</h3>
 
-        <form className="mt-10">
+        <form onSubmit={handleFormSubmit} className="mt-10 max-w-[870px] mx-auto">
 
 
             <div className="flex items-center flex-col lg:flex-row justify-between gap-6">
@@ -41,7 +107,7 @@ const Compose = () => {
                 <div className="w-full">
                     <div>
                         <label htmlFor="title" className=" font-semibold ">Category</label>
-                        <select className="w-full border-2 py-3 cursor-pointer px-5 rounded-lg mt-1 outline-none font-bold" name="category" id="category" defaultValue="" required>
+                        <select onChange={(e) => setCategory(e.target.value)} className="w-full border-2 py-3 cursor-pointer px-5 rounded-lg mt-1 outline-none font-bold" name="category" id="category" defaultValue="" required>
                             <option value="" disabled>Select a Category</option>
                             <option value="gadgets and electronics">Gadgets and Electronics</option>
                             <option value="software and apps">Software and Apps</option>
@@ -56,22 +122,29 @@ const Compose = () => {
             </div>
 
 
-            <div className='mt-5  '>
-                <ReactQuill
-                    modules={modules}
-                    className='max-w-[870px] mx-auto'
-                    placeholder='Start writing...'
-                    value={value} onChange={setValue}
-                    formats={formats}
-                />
-            </div>
+
+            <ReactQuill modules={modules} className='w-full my-5 ' placeholder='Start writing....' theme="snow" value={body} onChange={setBody} />
+
+
+            <input type="file" onChange={(e) => setImage(e.target?.files[0])} accept='image/*' className="file-input file-input-bordered w-full " required />
+
+            <button type='submit' className='w-full bg-green-600 text-white py-3 rounded-lg mt-5'>Publish</button>
+
+
+        </form >
 
 
 
-
-
-        </form>
-    </div>
+        <Toaster
+            toastOptions={{
+                style: {
+                    background: 'red',
+                    color: "white"
+                },
+                className: 'class',
+            }}
+        />
+    </div >
 }
 
 export default Compose
