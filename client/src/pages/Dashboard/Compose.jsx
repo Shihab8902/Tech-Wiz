@@ -8,10 +8,12 @@ import { Toaster, toast } from 'sonner';
 import moment from 'moment/moment';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Compose = () => {
-
     const { user } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const [body, setBody] = useState('');
     const [category, setCategory] = useState('');
@@ -32,6 +34,7 @@ const Compose = () => {
     };
 
     const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
 
 
 
@@ -67,10 +70,22 @@ const Compose = () => {
                         body,
                         totalViews: 0,
                         publisher: user?.displayName,
-                        publish_date: moment().format('MM/DD/YYYY')
+                        publish_date: moment().format('YYYY/MM/DD')
                     }
 
-                    console.log(blog);
+                    axiosSecure.post("/blogs", blog)
+                        .then(res => {
+                            if (res.data?.acknowledged) {
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "New blog successfully published!",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                navigate("/")
+                            }
+                        })
                 }
             })
 

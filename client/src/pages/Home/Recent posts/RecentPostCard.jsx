@@ -14,7 +14,7 @@ const RecentPostCard = ({ blog }) => {
             </div>
         </div>
 
-        <h3 className="ml-8 text-xl hover:text-green-600 font-bold">{title}</h3>
+        <h3 className="ml-8 text-xl hover:text-green-600 font-bold">{title?.length > 58 ? title.slice(0, 58) + "...." : title}</h3>
 
         <div className="ml-8 mt-5 text-gray-400 text-sm flex items-center">
             <p className="uppercase font-semibold">{publisher}</p> <p className="ml-1 mr-4"><GoDotFill /></p> <p>{publish_date}</p>
