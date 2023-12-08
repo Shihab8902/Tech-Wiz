@@ -1,11 +1,30 @@
+import DOMPurify from 'dompurify';
+import { Helmet } from 'react-helmet';
+import './blogBody.css';
+import { useEffect } from 'react';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+
 
 
 const BlogBody = ({ blog }) => {
-    const { body } = blog;
-    console.log(body)
+    const { body, title, totalViews, _id } = blog;
+    const axiosPublic = useAxiosPublic();
+    const newView = totalViews + 1;
+
+    useEffect(() => {
+        axiosPublic.put(`/updateView?id=${_id}`, { view: newView })
+
+    }, [newView, _id, axiosPublic])
+
+    const cleanHTML = DOMPurify.sanitize(body);
 
     return <div>
-        <div dangerouslySetInnerHTML={{ __html: body }} />
+        <Helmet>
+            <title>{title}</title>
+        </Helmet>
+
+
+        <div className='hyperlink text-justify' dangerouslySetInnerHTML={{ __html: cleanHTML }} />
     </div>
 
 

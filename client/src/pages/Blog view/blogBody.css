@@ -1,0 +1,7 @@
+.hyperlink a {
+    color: blue !important;
+}
+
+.hyperlink a:hover {
+    text-decoration: underline;
+}

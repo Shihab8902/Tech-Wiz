@@ -17,8 +17,8 @@ const BlogView = () => {
 
         <BlogBanner key={1} blog={blogData} />
 
-        <div className='grid grid-cols-3 gap-6 my-5 '>
-            <div className='col-span-2'>
+        <div className='grid lg:grid-cols-3 gap-6 my-5 '>
+            <div className='lg:col-span-2'>
                 <BlogBody key={blogData._id} blog={blogData} />
             </div>
             <div>

@@ -70,7 +70,7 @@ const Compose = () => {
                         body,
                         totalViews: 0,
                         publisher: user?.displayName,
-                        publish_date: moment().format('YYYY/MM/DD')
+                        publish_date: moment().format('YYYY-MM-DD')
                     }
 
                     axiosSecure.post("/blogs", blog)
@@ -115,14 +115,14 @@ const Compose = () => {
                 <div className="w-full" >
                     <div>
                         <label htmlFor="title" className=" font-semibold ">Title</label>
-                        <input className="w-full border-2 py-3 px-5 rounded-lg mt-1 outline-none font-bold placeholder:font-normal" type="text" name="title" id="title" placeholder="Enter title" required minLength={2} />
+                        <input className="w-full border py-3 px-5 rounded-lg mt-1 outline-none font-bold placeholder:font-normal" type="text" name="title" id="title" placeholder="Enter title" required minLength={2} />
                     </div>
                 </div>
 
                 <div className="w-full">
                     <div>
                         <label htmlFor="title" className=" font-semibold ">Category</label>
-                        <select onChange={(e) => setCategory(e.target.value)} className="w-full border-2 py-3 cursor-pointer px-5 rounded-lg mt-1 outline-none font-bold" name="category" id="category" defaultValue="" required>
+                        <select onChange={(e) => setCategory(e.target.value)} className="w-full border py-3 cursor-pointer px-5 rounded-lg mt-1 outline-none font-bold" name="category" id="category" defaultValue="" required>
                             <option value="" disabled>Select a Category</option>
                             <option value="gadgets and electronics">Gadgets and Electronics</option>
                             <option value="software and apps">Software and Apps</option>
