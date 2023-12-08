@@ -1,10 +1,11 @@
 const express = require("express");
-const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs } = require("./controllers/blogController");
+const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
 const { getUserByEmail, saveNewUser, getUserRole } = require("./controllers/userController");
 const { generateToken } = require("./controllers/tokenController");
 const verifyToken = require("./middlewares/verifyToken");
+const verifyAuthor = require("./middlewares/verifyAuthor");
 
 
 //Middlewares
@@ -19,7 +20,8 @@ app.get("/blogs", getBlog);
 app.get("/blogs/mostViewed", getMostViewedBlogs);
 app.get("/blogs/recent", getLatestBlogs);
 app.get("/blogs/:id", getSpecificBlog);
-app.post("/blogs", postBlog);
+app.post("/blogs", verifyToken, verifyAuthor, postBlog);
+app.put("/updateView", updateBlogView)
 
 
 

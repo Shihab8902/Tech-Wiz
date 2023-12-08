@@ -62,4 +62,25 @@ const postBlog = async (req, res) => {
 }
 
 
-module.exports = { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs };
+//update blog view
+const updateBlogView = async (req, res) => {
+    try {
+        const data = req.body;
+        const id = req.query.id;
+        const query = { _id: new ObjectId(id) };
+
+        const newDoc = {
+            $set: {
+                totalViews: data.view
+            }
+        }
+
+        const result = await blogCollection.updateOne(query, newDoc);
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView };
