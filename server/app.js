@@ -6,6 +6,7 @@ const { getUserByEmail, saveNewUser, getUserRole } = require("./controllers/user
 const { generateToken } = require("./controllers/tokenController");
 const verifyToken = require("./middlewares/verifyToken");
 const verifyAuthor = require("./middlewares/verifyAuthor");
+const { getAllSubscriber, getIndividualSubscriber, addNewSubscriber } = require("./controllers/subscriberController");
 
 
 //Middlewares
@@ -32,9 +33,15 @@ app.post("/user", saveNewUser);
 
 
 
-
 //Authentication and Authorization related apis
 app.post("/jwt", generateToken);
+
+
+
+//Subscriber related apis
+app.get("/subscribers", getAllSubscriber);      //TODO: make this route admin protective
+app.get("/subscriber", getIndividualSubscriber);
+app.post("/subscriber", addNewSubscriber);
 
 
 

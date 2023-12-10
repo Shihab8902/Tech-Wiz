@@ -1,9 +1,16 @@
-import React from 'react'
+import Categories from "./Categories"
+import NewsLetter from "./NewsLetter"
+import SocialMedia from "./SocialMedia"
+
+
 
 const BlogAside = () => {
-    return (
-        <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. In sunt exercitationem velit a, ratione quam vel quod rerum dolor, vero, at rem nemo veniam autem quos aliquam porro tempore obcaecati?</div>
-    )
+    return <div>
+        <SocialMedia />
+        <Categories />
+        <NewsLetter />
+
+    </div>
 }
 
 export default BlogAside

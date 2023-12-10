@@ -12,12 +12,12 @@ const BlogView = () => {
 
 
 
-    return <section className='px-5 container mx-auto'>
+    return <section className='px-5 container mx-auto '>
         <Nav />
 
         <BlogBanner key={1} blog={blogData} />
 
-        <div className='grid lg:grid-cols-3 gap-6 my-5 '>
+        <div className='grid lg:grid-cols-3 gap-8  my-10'>
             <div className='lg:col-span-2'>
                 <BlogBody key={blogData._id} blog={blogData} />
             </div>
