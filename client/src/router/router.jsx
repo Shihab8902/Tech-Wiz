@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
             {
                 path: "/blog/:id",
                 element: <BlogView />,
-                loader: ({ params }) => axiosPublic.get(`/blogs/${params.id}`)
+                loader: ({ params }) => axiosPublic.get(`/blog/${params.id}`)
             },
             {
                 path: "/signup",

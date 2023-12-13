@@ -49,6 +49,20 @@ const getLatestBlogs = async (req, res) => {
 }
 
 
+//Get related blogs
+const getRelatedBlogs = async (req, res) => {
+    try {
+        const category = req.query.category;
+        const query = { category: category };
+        const result = await blogCollection.find(query).sort({ publish_date: -1 }).limit(3).toArray();
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
 //post blog
 const postBlog = async (req, res) => {
     try {
@@ -83,4 +97,25 @@ const updateBlogView = async (req, res) => {
     }
 }
 
-module.exports = { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView };
+
+//update blog comments
+const updateBlogComments = async (req, res) => {
+    try {
+        const data = req.body;
+        const id = req.query.id;
+        const query = { _id: new ObjectId(id) };
+        const newDoc = {
+            $set: {
+                comments: data
+            }
+        }
+
+        const result = await blogCollection.updateOne(query, newDoc);
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments };

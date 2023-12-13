@@ -4,7 +4,7 @@ import { FaCommentDots, FaEye } from "react-icons/fa";
 
 
 const BlogBanner = ({ blog }) => {
-    const { image, category, title, publisher, publish_date, totalViews } = blog;
+    const { image, category, title, publisher, publish_date, totalViews, comments } = blog;
 
 
     return <div className='w-full mt-5 h-[200px] rounded-lg md:h-[400px] bg-cover bg-no-repeat bg-center ' style={{ backgroundImage: `url(${image})` }}>
@@ -14,7 +14,7 @@ const BlogBanner = ({ blog }) => {
                 <h3 className='text-base md:text-3xl lg:text-4xl font-bold text-slate-100 leading-tight'>{title}</h3>
                 <div className="text-slate-100 flex items-center text-[10px] md:text-base">
                     <p className="uppercase font-semibold">{publisher}</p> <p className="ml-1 mr-3"><GoDotFill /></p> <p className='flex items-center'>{publish_date} <GoDotFill /></p>
-                    <p className='flex items-center gap-1 ml-3'> <FaCommentDots />{0} </p> <GoDotFill /> <p className='flex items-center gap-1 ml-3'><FaEye /> {totalViews}</p>
+                    <p className='flex items-center gap-1 ml-3'> <FaCommentDots />{comments?.length} </p> <GoDotFill /> <p className='flex items-center gap-1 ml-3'><FaEye /> {totalViews}</p>
                 </div>
             </div>
         </div>

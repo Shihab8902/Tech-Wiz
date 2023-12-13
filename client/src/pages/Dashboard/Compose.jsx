@@ -68,6 +68,7 @@ const Compose = () => {
                         category,
                         image: imageURL,
                         body,
+                        comments: [],
                         totalViews: 0,
                         publisher: user?.displayName,
                         publish_date: moment().format('YYYY-MM-DD')

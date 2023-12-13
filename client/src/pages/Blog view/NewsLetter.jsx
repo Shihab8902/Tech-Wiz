@@ -1,6 +1,6 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import SectionTitle from "../../components/Section title/SectionTitle"
-import { UserContext } from "../../context/AuthProvider"
+
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from 'sweetalert2';
 
@@ -10,7 +10,7 @@ const NewsLetter = () => {
 
     const [isExploding, setIsExploding] = useState(false);
 
-    const { user } = useContext(UserContext);
+
     const axiosPublic = useAxiosPublic();
 
 
@@ -62,8 +62,8 @@ const NewsLetter = () => {
 
         <form onSubmit={handleFormSubmit} className="p-10 border-dotted border-2 bg-gray-50 mt-5"  >
             <p className="text-sm text-medium text-gray-400">Stay in the know with our latest blog posts. Subscribe to our newsletter.</p>
-            <input className="w-full font-semibold placeholder:font-normal p-3 border mt-5 border-slate-700 outline-none" type="email" defaultValue={user && user?.email} name="userEmail" id="userEmail" placeholder="Enter your Email" required />
-            <button type="submit" className="w-1/2 bg-green-500 text-white py-3 mt-3 font-semibold">Subscribe </button>
+            <input className="w-full font-semibold placeholder:font-normal p-3 border mt-5 border-slate-700 outline-none" type="email" name="userEmail" id="userEmail" placeholder="Enter your Email" required />
+            <button type="submit" className="w-1/2 bg-green-600 text-white py-3 mt-3 font-semibold">Subscribe </button>
         </form>
 
     </div>

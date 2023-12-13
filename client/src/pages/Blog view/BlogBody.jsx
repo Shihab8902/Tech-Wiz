@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet';
 import './blogBody.css';
 import { useEffect } from 'react';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
+import RelatedPosts from './RelatedPosts';
+import Comments from './Comments';
 
 
 
@@ -25,6 +27,10 @@ const BlogBody = ({ blog }) => {
 
 
         <div className='hyperlink text-justify' dangerouslySetInnerHTML={{ __html: cleanHTML }} />
+
+        <RelatedPosts blog={blog} />
+        <Comments blog={blog} />
+
     </div>
 
 
