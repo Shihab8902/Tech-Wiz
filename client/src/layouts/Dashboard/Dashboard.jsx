@@ -17,6 +17,7 @@ import { updateProfile } from "firebase/auth";
 const Dashboard = () => {
     const { user } = useContext(UserContext);
     const [image, setImage] = useState(user?.photoURL);
+    const [isUpdating, setIsUpdating] = useState(false);
     const [isChanged, setIsChanged] = useState(false);
     const [modifiedImage, setModifiedImage] = useState(user?.photoURL);
     const [modifiedName, setModifiedName] = useState(user?.displayName);
@@ -36,6 +37,7 @@ const Dashboard = () => {
     </>
 
 
+    // Render image on change
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         setModifiedImage(file);
@@ -50,8 +52,9 @@ const Dashboard = () => {
     };
 
 
-
+    // Handle image update change
     const handleProfileUpdate = () => {
+        setIsUpdating(true);
         const imageHostingAPIKey = import.meta.env.VITE_IMAGE_HOSTING_API_KEY;
         axiosPublic.post(`https://api.imgbb.com/1/upload?key=${imageHostingAPIKey}`, { image: modifiedImage }, {
             headers: {
@@ -78,6 +81,7 @@ const Dashboard = () => {
                                         });
                                         setImage(imageURL);
                                         setIsChanged(false);
+                                        setIsUpdating(false);
                                     })
                             }
                         })
@@ -90,25 +94,32 @@ const Dashboard = () => {
     return <div className="drawer lg:drawer-open bg-gray-100 container mx-auto">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content ">
+            {/* Drawer button */}
             <div className=" lg:hidden  p-3">
                 <label htmlFor="my-drawer-2" className="text-3xl drawer-button "><CgMenuLeftAlt /></label>
             </div>
 
+            {/* Render Outlet */}
             <div className="m-4">
                 <Outlet />
             </div>
 
         </div>
+        {/* Drawer sidebar */}
         <div className="drawer-side">
             <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
             <ul className="menu p-4 w-80 min-h-full bg-white shadow">
                 <div className=" mb-10 flex items-center justify-between">
                     <Link to="/" className='font-bold text-3xl'>Tech<span className='text-[#36d636]'>Wiz</span></Link>
 
+                    {/* User image and name */}
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                            <div className="w-8 rounded-full">
-                                <img alt="Tailwind CSS Navbar component" src={user?.photoURL || "https://i.ibb.co/FKyGxmB/gray-photo-placeholder-icon-design-ui-vector-35850819.webp"} />
+                            <div className="w-8 rounded-full border-2 ">
+                                {
+                                    isUpdating ? <img alt="User" src="https://i.ibb.co/tm2yWnf/updating.gif" /> :
+                                        <img alt="User" src={user?.photoURL || "https://i.ibb.co/FKyGxmB/gray-photo-placeholder-icon-design-ui-vector-35850819.webp"} />
+                                }
                             </div>
                         </div>
                         <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
@@ -122,6 +133,7 @@ const Dashboard = () => {
                 }
             </ul>
 
+            {/* Profile update modal */}
             <dialog id="my_modal_3" className="modal">
                 <div className="modal-box">
                     <form method="dialog">
@@ -129,7 +141,7 @@ const Dashboard = () => {
                     </form>
                     <div >
                         <div className="relative overflow-hidden w-[80px] h-[80px] rounded-full mx-auto">
-                            <img src={image || 'https://i.ibb.co/FKyGxmB/gray-photo-placeholder-icon-design-ui-vector-35850819.webp'} alt="User" className="w-full h-full rounded-full" />
+                            <img src={image || 'https://i.ibb.co/FKyGxmB/gray-photo-placeholder-icon-design-ui-vector-35850819.webp'} alt="User" className="w-full h-full rounded-full " />
                             <input
                                 type="file"
                                 accept="image/*"
