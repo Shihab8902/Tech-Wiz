@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom"
+import { Form, Link, NavLink, Outlet } from "react-router-dom"
 import { CgMenuLeftAlt } from "react-icons/cg";
 import { BsFillBarChartFill } from "react-icons/bs";
 import { FaRegListAlt } from "react-icons/fa";
@@ -8,12 +8,21 @@ import { FaQuoteRight } from "react-icons/fa";
 import { useContext } from "react";
 import { UserContext } from "../../context/AuthProvider";
 import { useState } from "react";
-
+import Swal from "sweetalert2"
 import "./dashboard.css"
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { updateProfile } from "firebase/auth";
 
 const Dashboard = () => {
     const { user } = useContext(UserContext);
     const [image, setImage] = useState(user?.photoURL);
+    const [isChanged, setIsChanged] = useState(false);
+    const [modifiedImage, setModifiedImage] = useState(user?.photoURL);
+    const [modifiedName, setModifiedName] = useState(user?.displayName);
+    const axiosSecure = useAxiosSecure();
+    const axiosPublic = useAxiosPublic();
+
 
     const navLinks = <>
 
@@ -29,7 +38,8 @@ const Dashboard = () => {
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
-
+        setModifiedImage(file);
+        setIsChanged(true);
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
@@ -38,6 +48,43 @@ const Dashboard = () => {
             reader.readAsDataURL(file);
         }
     };
+
+
+
+    const handleProfileUpdate = () => {
+        const imageHostingAPIKey = import.meta.env.VITE_IMAGE_HOSTING_API_KEY;
+        axiosPublic.post(`https://api.imgbb.com/1/upload?key=${imageHostingAPIKey}`, { image: modifiedImage }, {
+            headers: {
+                "content-Type": "multipart/form-data"
+            }
+        })
+            .then(res => {
+                if (res.data?.success) {
+                    const imageURL = res.data?.data.display_url;
+                    axiosSecure.put(`/updateUser?email=${user?.email}`, { name: modifiedName, image: imageURL })
+                        .then(res => {
+                            if (res.data?.modifiedCount > 0) {
+                                updateProfile(user, {
+                                    displayName: modifiedName,
+                                    photoURL: imageURL
+                                })
+                                    .then(() => {
+                                        Swal.fire({
+                                            position: "center",
+                                            icon: "success",
+                                            text: "Your profile has been updated successfully!",
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        });
+                                        setImage(imageURL);
+                                        setIsChanged(false);
+                                    })
+                            }
+                        })
+                }
+
+            });
+    }
 
 
     return <div className="drawer lg:drawer-open bg-gray-100 container mx-auto">
@@ -91,11 +138,14 @@ const Dashboard = () => {
                             />
                         </div>
 
-                        <input type="text" className="w-full font-bold outline-none px-5 py-3 mt-5 text-center rounded-lg " defaultValue={user?.displayName} />
+                        <input type="text" onChange={(e) => {
+                            setIsChanged(true);
+                            setModifiedName(e.target.value)
+                        }} className="w-full font-bold outline-none px-5 py-3 mt-5 text-center rounded-lg " defaultValue={user?.displayName} minLength={2} />
 
-                        <div>
-                            <button className="bg-green-600 w-full py-3 rounded-lg mt-5 text-white">Update Profile</button>
-                        </div>
+                        <form method="dialog">
+                            <button disabled={!isChanged} onClick={handleProfileUpdate} className="bg-green-600 hover:text-black btn w-full py-3 rounded-lg mt-5 text-white">Update Profile</button>
+                        </form>
                     </div>
                 </div>
             </dialog>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { BiMenu } from 'react-icons/bi';
 import { BiLogoFacebook } from 'react-icons/bi';
 import { BiLogoTwitter } from 'react-icons/bi';
@@ -20,7 +20,7 @@ const Nav = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const { user, userLogOut } = useContext(UserContext);
     const { userRole } = useGetUserRole();
-
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -47,6 +47,7 @@ const Nav = () => {
                             showConfirmButton: false,
                             timer: 1500
                         });
+                        navigate("/")
                     })
             }
         });

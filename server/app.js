@@ -2,7 +2,7 @@ const express = require("express");
 const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
-const { getUserByEmail, saveNewUser, getUserRole } = require("./controllers/userController");
+const { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser } = require("./controllers/userController");
 const { generateToken } = require("./controllers/tokenController");
 const verifyToken = require("./middlewares/verifyToken");
 const verifyAuthor = require("./middlewares/verifyAuthor");
@@ -31,7 +31,7 @@ app.put("/updateComments", verifyToken, updateBlogComments);
 //User related apis
 app.get("/user", getUserByEmail);
 app.get("/userRole", verifyToken, getUserRole);
-app.post("/user", saveNewUser);
+app.put("/updateUser", verifyToken, updateUser);
 
 
 

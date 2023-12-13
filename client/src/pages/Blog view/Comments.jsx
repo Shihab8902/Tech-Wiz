@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import SectionTitle from "../../components/Section title/SectionTitle"
 import { UserContext } from "../../context/AuthProvider";
 import { Link } from 'react-router-dom'
@@ -12,6 +12,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 const Comments = ({ blog }) => {
     const { user } = useContext(UserContext);
     const axiosSecure = useAxiosSecure();
+    const [updatedComment, setUpdatedComment] = useState('');
 
 
     const handleCommentSubmit = e => {
@@ -87,6 +88,22 @@ const Comments = ({ blog }) => {
 
     }
 
+    const handleCommentEdit = (id) => {
+        const selectedComment = blog?.comments.find(selectedBlog => selectedBlog.commentId === id);
+        if (!updatedComment) {
+            window.location.reload();
+            return;
+        }
+        selectedComment.comment = updatedComment;
+        //update the blog with new comment
+        axiosSecure.put(`/updateComments?id=${blog?._id}`, blog?.comments)
+            .then(res => {
+                if (res.data?.modifiedCount > 0) {
+                    window.location.reload();
+                }
+            })
+    }
+
 
 
 
@@ -102,6 +119,9 @@ const Comments = ({ blog }) => {
                 <button>close</button>
             </form>
         </dialog>
+
+
+
 
         <div className="mt-5">
 
@@ -123,19 +143,32 @@ const Comments = ({ blog }) => {
 
 
                                 return <div key={commentId} className="mb-10 w-full">
+
+                                    {/* Modal for update comment */}
+                                    <dialog id="my_modal_3" className="modal">
+                                        <div className="modal-box py-10">
+                                            <textarea onChange={(e) => setUpdatedComment(e.target.value)} name="updatedComment" defaultValue={comment} className="w-full h-48 border-2 outline-none p-3"></textarea>
+                                            <button onClick={() => handleCommentEdit(commentId)} className=" w-full bg-green-600 py-3 mt-5 text-white font-semibold "> Update</button>
+                                        </div>
+                                        <form method="dialog" className="modal-backdrop">
+                                            <button>close</button>
+                                        </form>
+                                    </dialog>
+
+                                    {/* Render comments */}
                                     <div className="flex gap-4 ">
                                         <img className=" w-14 h-14 rounded-full" src={image || "https://i.ibb.co/FKyGxmB/gray-photo-placeholder-icon-design-ui-vector-35850819.webp"} alt="" />
-                                        <div className="flex items-center gap-4">
-                                            <p className="font-bold text-lg ">{name}</p> <span className="text-xs font-medium text-gray-500">{commentedAt}</span>
+                                        <div className="flex items-center gap-2 md:gap-4">
+                                            <p className="font-bold md:text-lg ">{name}</p> <span className="text-xs font-medium text-gray-500">{commentedAt}</span>
                                             {
                                                 user?.email === email && <div className="flex items-center gap-2">
-                                                    <button className="text-xs"><FaEdit /></button>
+                                                    <button onClick={() => document.getElementById('my_modal_3').showModal()} className="text-xs"><FaEdit /></button>
                                                     <button onClick={() => handleCommentDelete(commentId)} className="text-sm text-red-600"><MdDelete /></button>
                                                 </div>
                                             }
                                         </div>
                                     </div>
-                                    <p className="ml-20 text-gray-600">{comment}</p>
+                                    <p className="md:ml-20 text-gray-600">{comment}</p>
                                 </div>
                             })
                         }
