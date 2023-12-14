@@ -71,6 +71,7 @@ const Compose = () => {
                         comments: [],
                         totalViews: 0,
                         publisher: user?.displayName,
+                        publisher_email: user?.email,
                         publish_date: moment().format('YYYY-MM-DD')
                     }
 
@@ -90,22 +91,12 @@ const Compose = () => {
                 }
             })
 
-
-
-
-
-
-
-
-
-
-
     }
 
 
 
 
-    return <div className="  px-5 py-10 bg-white shadow rounded-lg">
+    return <div className="  px-5 py-10 bg-white shadow rounded-lg min-h-screen">
         <h3 className="text-center font-semibold text-xl uppercase">Compose a new Blog</h3>
 
         <form onSubmit={handleFormSubmit} className="mt-10 max-w-[870px] mx-auto">

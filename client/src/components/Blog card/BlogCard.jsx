@@ -2,7 +2,6 @@ import { GoDotFill } from "react-icons/go";
 import { Link, useNavigate } from "react-router-dom";
 
 const BlogCard = ({ blog }) => {
-    const navigate = useNavigate();
     const { image, category, title, publisher, publish_date, _id } = blog;
 
     return <Link to={`/blog/${_id}`}>
@@ -13,7 +12,7 @@ const BlogCard = ({ blog }) => {
             </div>
             <div className="mt-5">
                 <p className="uppercase text-green-500 font-semibold text-sm mb-2">{category}</p>
-                <h3 className=" text-xl hover:text-green-600 font-bold mb-5">{title?.length > 58 ? title.slice(0, 58) + "...." : title}</h3>
+                <h3 className=" text-xl hover:text-green-600 font-bold mb-5">{title?.length > 40 ? title.slice(0, 40) + "...." : title}</h3>
                 <div className=" text-gray-400 text-sm flex items-center">
                     <p className="uppercase font-semibold">{publisher}</p> <p className="ml-1 mr-4"><GoDotFill /></p> <p>{publish_date}</p>
                 </div>

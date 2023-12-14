@@ -1,5 +1,5 @@
 const express = require("express");
-const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments } = require("./controllers/blogController");
+const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
 const { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser } = require("./controllers/userController");
@@ -18,6 +18,7 @@ app.use(express.json());
 
 //Blog related apis
 app.get("/blogs", getBlog);
+app.get("/totalBlogs", getTotalBlogs);
 app.get("/blogs/mostViewed", getMostViewedBlogs);
 app.get("/blogs/recent", getLatestBlogs);
 app.get("/blog/:id", getSpecificBlog);

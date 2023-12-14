@@ -5,13 +5,55 @@ const { blogCollection } = getModel();
 //get blogs
 const getBlog = async (req, res) => {
     try {
-        const result = await blogCollection.find().toArray();
+        const searchString = req.query.search;
+        const filterValue = req.query.filter;
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+
+        if (searchString) {
+            const query = { title: { $regex: searchString, $options: "i" } };
+            const result = await blogCollection.find(query).skip(page * limit).limit(limit).toArray();
+            return res.send(result);
+
+        }
+
+        if (filterValue === "all") {
+            const result = await blogCollection.find().skip(page * limit).limit(limit).toArray();
+            return res.send(result);
+        }
+
+        if (filterValue === "recent") {
+            const query = { publish_date: -1 };
+            const result = await blogCollection.find().sort(query).skip(page * limit).limit(limit).toArray();
+            return res.send(result);
+        }
+
+        if (filterValue === "popular") {
+            const query = { totalViews: -1 };
+            const result = await blogCollection.find().sort(query).skip(page * limit).limit(limit).toArray();
+            return res.send(result);
+        }
+
+        const result = await blogCollection.find().skip(page * limit).limit(limit).toArray();
         res.send(result);
+
     }
     catch (error) {
         console.log(error)
     }
 };
+
+
+//Get total blogs count
+const getTotalBlogs = async (req, res) => {
+    try {
+        const result = await blogCollection.estimatedDocumentCount();
+        res.send({ total: result })
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
 
 
 //Get most viewed blogs
@@ -118,4 +160,4 @@ const updateBlogComments = async (req, res) => {
     }
 }
 
-module.exports = { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments };
+module.exports = { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs };

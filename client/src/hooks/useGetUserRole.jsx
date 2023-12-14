@@ -8,7 +8,7 @@ const useGetUserRole = () => {
     const { user, loading } = useContext(UserContext);
     const axiosSecure = useAxiosSecure();
 
-    const { data: userRole, refetch } = useQuery({
+    const { data: userRole, refetch, isLoading } = useQuery({
         queryKey: [user?.email, "userRole"],
         enabled: !loading,
         queryFn: async () => {
@@ -22,7 +22,7 @@ const useGetUserRole = () => {
     })
 
 
-    return { userRole, refetch }
+    return { userRole, refetch, isLoading }
 
 
 
