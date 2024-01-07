@@ -15,6 +15,7 @@ import AdminRoute from '../components/AdminRoute/AdminRoute';
 import ManageBlogs from '../pages/Dashboard/Admin/Manage Blogs/ManageBlogs';
 import ManageUsers from '../pages/Dashboard/Admin/Manage Users/ManageUsers';
 import MyBlogs from '../pages/Dashboard/MyBlogs';
+import UpdateBlog from '../pages/Dashboard/UpdateBlog';
 
 
 const axiosPublic = useAxiosPublic();
@@ -67,6 +68,13 @@ export const router = createBrowserRouter([
                 element: <AuthorRoute>
                     <MyBlogs />
                 </AuthorRoute>
+            },
+            {
+                path: "/dashboard/edit/:id",
+                element: <AuthorRoute>
+                    <UpdateBlog />
+                </AuthorRoute>,
+                loader: ({ params }) => axiosPublic.get(`/blog/${params.id}`)
             },
 
             //Admin routes

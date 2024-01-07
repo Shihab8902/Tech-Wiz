@@ -2,8 +2,11 @@ import { useContext, useEffect, useState } from 'react'
 import useGetSecure from '../../hooks/useGetSecure';
 import NoDataLoader from '../../components/Loader/NoDataLoader';
 import useGetPublic from '../../hooks/useGetPublic';
-import ManageBlogCard from './Admin/Manage Blogs/ManageBlogCard';
+
 import { UserContext } from '../../context/AuthProvider';
+import MyBlogsCard from './MyBlogsCard';
+import Swal from 'sweetalert2';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 
 
@@ -25,13 +28,42 @@ const MyBlogs = () => {
 
     const { data: blogs, refetch, isPending } = useGetSecure(["myBlogs", user?.email], `/myBlogs?email=${user?.email}&filter=${filterValue}&page=${currentPage}&limit=${blogsPerPage}`);
 
+    const axiosSecure = useAxiosSecure();
 
+
+    const handleBlogDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/blog?id=${id}`)
+                    .then(res => {
+                        if (res.data?.deletedCount > 0) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "The blog has been deleted!",
+                                icon: "success"
+                            });
+                            refetch();
+                        }
+                    })
+
+            }
+        });
+
+    }
 
 
 
     useEffect(() => {
         refetch();
-    }, [filterValue, currentPage]);
+    }, [filterValue, currentPage, handleBlogDelete]);
 
 
 
@@ -63,7 +95,7 @@ const MyBlogs = () => {
                 isPending ? <NoDataLoader /> :
                     blogs?.length > 0 ? <div className="grid md:grid-cols-2 lg:grid-cols-3  gap-y-8 gap-x-6 mt-8">
                         {
-                            blogs.map(blog => <ManageBlogCard key={blog._id} blog={blog} />)
+                            blogs.map(blog => <MyBlogsCard key={blog._id} blog={blog} handleBlogDelete={handleBlogDelete} />)
                         }
 
 

@@ -15,6 +15,8 @@ const Compose = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
+    const [isPosting, setIsPosting] = useState(false);
+
     const [body, setBody] = useState('');
     const [category, setCategory] = useState('');
     const [image, setImage] = useState('');
@@ -41,6 +43,7 @@ const Compose = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         const title = e.target.title.value;
+        setIsPosting(true);
 
 
         if (body.length < 1) {
@@ -85,7 +88,9 @@ const Compose = () => {
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
-                                navigate("/")
+                                navigate("/dashboard/myBlogs");
+                                setIsPosting(false);
+
                             }
                         })
                 }
@@ -135,7 +140,7 @@ const Compose = () => {
 
             <input type="file" onChange={(e) => setImage(e.target?.files[0])} accept='image/*' className="file-input file-input-bordered w-full " required />
 
-            <button type='submit' className='w-full bg-green-600 text-white py-3 rounded-lg mt-5'>Publish</button>
+            <button type='submit' disabled={isPosting} className='w-full btn bg-green-600 text-white py-3 rounded-lg mt-5'> {isPosting ? <span className='flex gap-1 items-center'>Publishing.... <span className="loading loading-spinner loading-xs"></span></span> : "Publish"} </button>
 
 
         </form >

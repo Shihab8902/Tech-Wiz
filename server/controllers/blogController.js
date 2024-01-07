@@ -202,6 +202,32 @@ const updateBlogComments = async (req, res) => {
 }
 
 
+//Update blog
+const updateBlog = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const data = req.body;
+        const filter = { _id: new ObjectId(id) };
+
+        const newDoc = {
+            $set: {
+                title: data.title,
+                category: data.category,
+                image: data.image,
+                body: data.body
+            }
+        }
+
+        const result = await blogCollection.updateOne(filter, newDoc);
+        res.send(result);
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
 //Delete a blog
 const deleteBlog = async (req, res) => {
     try {
@@ -215,4 +241,4 @@ const deleteBlog = async (req, res) => {
     }
 }
 
-module.exports = { getBlog, getBlogsByEmail, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };
+module.exports = { getBlog, getBlogsByEmail, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };

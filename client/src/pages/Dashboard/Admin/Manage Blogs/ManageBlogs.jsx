@@ -21,7 +21,7 @@ const ManageBlogs = () => {
 
     const axiosSecure = useAxiosSecure();
 
-    const handleBlogDelete = () => {
+    const handleBlogDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -32,7 +32,7 @@ const ManageBlogs = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.delete(`/blog?id=${_id}`)
+                axiosSecure.delete(`/blog?id=${id}`)
                     .then(res => {
                         if (res.data?.deletedCount > 0) {
                             Swal.fire({

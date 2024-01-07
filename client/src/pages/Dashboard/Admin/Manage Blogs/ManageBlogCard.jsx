@@ -18,7 +18,7 @@ const ManageBlogCard = ({ blog, handleBlogDelete }) => {
         <div className="mt-5">
             <div className="flex items-center justify-between">
                 <p className="uppercase text-green-500 font-semibold text-sm mb-2">{category}</p>
-                <button onClick={handleBlogDelete} className="text-xl text-red-500"><MdDelete /></button>
+                <button onClick={() => handleBlogDelete(_id)} className="text-xl text-red-500"><MdDelete /></button>
             </div>
             <Link to={`/blog/${_id}`}><h3 className=" text-xl hover:text-green-600 font-bold mb-5">{title?.length > 40 ? title.slice(0, 40) + "...." : title}</h3></Link>
             <div className=" text-gray-400 text-sm flex items-center">
