@@ -13,6 +13,8 @@ import Compose from '../pages/Dashboard/Compose';
 import AuthorRoute from '../components/AuthorRoute/AuthorRoute';
 import AdminRoute from '../components/AdminRoute/AdminRoute';
 import ManageBlogs from '../pages/Dashboard/Admin/Manage Blogs/ManageBlogs';
+import ManageUsers from '../pages/Dashboard/Admin/Manage Users/ManageUsers';
+import MyBlogs from '../pages/Dashboard/MyBlogs';
 
 
 const axiosPublic = useAxiosPublic();
@@ -60,12 +62,24 @@ export const router = createBrowserRouter([
                     <Compose />
                 </AuthorRoute>
             },
+            {
+                path: "/dashboard/myblogs",
+                element: <AuthorRoute>
+                    <MyBlogs />
+                </AuthorRoute>
+            },
 
             //Admin routes
             {
                 path: "/dashboard/manageBlogs",
                 element: <AdminRoute>
                     <ManageBlogs />
+                </AdminRoute>
+            },
+            {
+                path: "/dashboard/manageUsers",
+                element: <AdminRoute>
+                    <ManageUsers />
                 </AdminRoute>
             }
         ]

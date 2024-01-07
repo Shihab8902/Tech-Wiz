@@ -3,6 +3,65 @@ const getModel = require("../model/db");
 const { userCollection } = getModel();
 
 
+
+//Get all users
+const getAllUsers = async (req, res) => {
+    try {
+
+        const searchString = req.query.search;
+        const filter = req.query.filter;
+
+
+        //Handle search by email
+        if (searchString) {
+            const caseInsensitive = new RegExp(searchString, "i");
+            const filter = { email: { $regex: caseInsensitive } };
+
+            const result = await userCollection.find(filter).toArray();
+            return res.send(result);
+        }
+
+
+        //Handle filter
+        switch (filter) {
+            case "all": {
+                const result = await userCollection.find().toArray();
+                return res.send(result);
+            }
+
+            case "users": {
+                const result = await userCollection.find({ role: "user" }).toArray();
+                return res.send(result);
+            }
+
+            case "author": {
+                const result = await userCollection.find({ role: "author" }).toArray();
+                return res.send(result);
+            }
+
+            case "admin": {
+                const result = await userCollection.find({ role: "admin" }).toArray();
+                return res.send(result);
+            }
+
+            case "new": {
+                const result = await userCollection.find().sort({ registeredAt: -1 }).toArray();
+                return res.send(result);
+            }
+        }
+
+
+
+        const result = await userCollection.find().toArray();
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+//Get user by email
 const getUserByEmail = async (req, res) => {
     try {
         const email = req.query.email;
@@ -16,6 +75,7 @@ const getUserByEmail = async (req, res) => {
 }
 
 
+//Get user role
 const getUserRole = async (req, res) => {
     try {
         const email = req.query.email;
@@ -49,7 +109,7 @@ const getSingleUser = async (req, res) => {
 
 
 
-
+//Add new user
 const saveNewUser = async (req, res) => {
     try {
         const data = req.body;
@@ -89,4 +149,4 @@ const updateUser = async (req, res) => {
 }
 
 
-module.exports = { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser };
+module.exports = { getAllUsers, getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser };

@@ -44,6 +44,47 @@ const getBlog = async (req, res) => {
 };
 
 
+//get blogs my email
+const getBlogsByEmail = async (req, res) => {
+    try {
+
+        const email = req.query.email;
+        const filterValue = req.query.filter;
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+
+
+
+        switch (filterValue) {
+            case "all": {
+                const result = await blogCollection.find({ publisher_email: email }).skip(page * limit).limit(limit).toArray();
+                return res.send(result);
+            }
+
+            case "recent": {
+                const query = { publish_date: -1 };
+                const result = await blogCollection.find({ publisher_email: email }).sort(query).skip(page * limit).limit(limit).toArray();
+                return res.send(result);
+            }
+
+            case "popular": {
+                const query = { totalViews: -1 };
+                const result = await blogCollection.find({ publisher_email: email }).sort(query).skip(page * limit).limit(limit).toArray();
+                return res.send(result);
+            }
+        }
+
+        const result = await blogCollection.find({ publisher_email: email }).skip(page * limit).limit(limit).toArray();
+        res.send(result);
+
+    }
+    catch (error) {
+        console.log(error)
+    }
+};
+
+
+
 //Get total blogs count
 const getTotalBlogs = async (req, res) => {
     try {
@@ -160,4 +201,18 @@ const updateBlogComments = async (req, res) => {
     }
 }
 
-module.exports = { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs };
+
+//Delete a blog
+const deleteBlog = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await blogCollection.deleteOne(query);
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getBlog, getBlogsByEmail, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };

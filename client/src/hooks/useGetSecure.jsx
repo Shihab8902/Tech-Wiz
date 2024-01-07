@@ -1,13 +1,14 @@
-import useAxiosPublic from './useAxiosPublic'
-import { useQuery } from '@tanstack/react-query';
 
-const useGetPublic = (queryKey, url) => {
-    const axiosPublic = useAxiosPublic();
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from './useAxiosSecure';
+
+const useGetSecure = (queryKey, url) => {
+    const axiosSecure = useAxiosSecure();
 
     const { data, refetch, isPending } = useQuery({
         queryKey: queryKey,
         queryFn: async () => {
-            const result = await axiosPublic.get(url);
+            const result = await axiosSecure.get(url);
             return result.data;
         }
     });
@@ -15,4 +16,4 @@ const useGetPublic = (queryKey, url) => {
     return { data, refetch, isPending };
 }
 
-export default useGetPublic
+export default useGetSecure

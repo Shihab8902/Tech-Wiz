@@ -8,12 +8,14 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Swal from 'sweetalert2';
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useGetUserRole from "../../hooks/useGetUserRole";
 
 const Comments = ({ blog }) => {
     const { user } = useContext(UserContext);
     const axiosSecure = useAxiosSecure();
     const [updatedComment, setUpdatedComment] = useState('');
 
+    const { userRole } = useGetUserRole();
 
     const handleCommentSubmit = e => {
         e.preventDefault();
@@ -160,12 +162,16 @@ const Comments = ({ blog }) => {
                                         <img className=" w-14 h-14 rounded-full" src={image || "https://i.ibb.co/FKyGxmB/gray-photo-placeholder-icon-design-ui-vector-35850819.webp"} alt="" />
                                         <div className="flex items-center gap-2 md:gap-4">
                                             <p className="font-bold md:text-lg ">{name}</p> <span className="text-xs font-medium text-gray-500">{commentedAt}</span>
-                                            {
-                                                user?.email === email && <div className="flex items-center gap-2">
-                                                    <button onClick={() => document.getElementById('my_modal_3').showModal()} className="text-xs"><FaEdit /></button>
-                                                    <button onClick={() => handleCommentDelete(commentId)} className="text-sm text-red-600"><MdDelete /></button>
-                                                </div>
-                                            }
+
+                                            <div className="flex items-center gap-2">
+                                                {
+                                                    user?.email === email && <button onClick={() => document.getElementById('my_modal_3').showModal()} className="text-xs"><FaEdit /></button>
+                                                }
+                                                {
+                                                    user?.email === email || userRole === "admin" ? <button onClick={() => handleCommentDelete(commentId)} className="text-sm text-red-600"><MdDelete /></button> : ''
+                                                }
+                                            </div>
+
                                         </div>
                                     </div>
                                     <p className="md:ml-20 text-gray-600">{comment}</p>

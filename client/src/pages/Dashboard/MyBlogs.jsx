@@ -1,14 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from 'react'
+import useGetSecure from '../../hooks/useGetSecure';
+import NoDataLoader from '../../components/Loader/NoDataLoader';
+import useGetPublic from '../../hooks/useGetPublic';
+import ManageBlogCard from './Admin/Manage Blogs/ManageBlogCard';
+import { UserContext } from '../../context/AuthProvider';
 
-import NoDataLoader from "../../../../components/Loader/NoDataLoader";
-import useGetPublic from "../../../../hooks/useGetPublic"
-import ManageBlogCard from "./ManageBlogCard";
-import useAxiosSecure from "../../../../hooks/useAxiosSecure";
-import Swal from 'sweetalert2';
 
-const ManageBlogs = () => {
-    const [searchString, setSearchString] = useState('');
+
+const MyBlogs = () => {
+
     const [filterValue, setFilterValue] = useState('');
+
+    const { user } = useContext(UserContext);
+
+
+
     // pagination
     const blogsPerPage = 6;
     const { data: blogCount } = useGetPublic(["blogCount"], `/totalBlogs`);
@@ -16,38 +22,8 @@ const ManageBlogs = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const pages = [...Array(totalPages).keys()];
 
-    const { data: blogs, refetch, isPending } = useGetPublic(["allBlogs"], `/blogs?search=${searchString}&filter=${filterValue}&page=${currentPage}&limit=${blogsPerPage}`);
 
-
-    const axiosSecure = useAxiosSecure();
-
-    const handleBlogDelete = () => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axiosSecure.delete(`/blog?id=${_id}`)
-                    .then(res => {
-                        if (res.data?.deletedCount > 0) {
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "The blog has been deleted!",
-                                icon: "success"
-                            });
-                            refetch();
-                        }
-                    })
-
-            }
-        });
-
-    }
+    const { data: blogs, refetch, isPending } = useGetSecure(["myBlogs", user?.email], `/myBlogs?email=${user?.email}&filter=${filterValue}&page=${currentPage}&limit=${blogsPerPage}`);
 
 
 
@@ -55,7 +31,8 @@ const ManageBlogs = () => {
 
     useEffect(() => {
         refetch();
-    }, [searchString, filterValue, currentPage, handleBlogDelete]);
+    }, [filterValue, currentPage]);
+
 
 
 
@@ -66,14 +43,10 @@ const ManageBlogs = () => {
     return (
         <div className=" px-5 py-10 bg-white shadow rounded-lg min-h-screen">
 
-            <h3 className="text-center font-semibold text-xl uppercase">Manage Blogs</h3>
+            <h3 className="text-center font-semibold text-xl uppercase">My Blogs</h3>
 
 
-            <div className=" mt-10 ">
-                <div className="text-center">
-                    <input onChange={(e) => setSearchString(e.target.value)} className="w-full py-3 md:w-1/2 bg-gray-50 border-2 border-slate-300 px-5  rounded-lg outline-none font-semibold" type="search" placeholder="Search..." />
-                </div>
-            </div>
+
 
             <div className='flex mt-8 mr-5 justify-end'>
                 <select onChange={(e) => setFilterValue(e.target.value)} value={filterValue} className='font-semibold outline-none cursor-pointer border bg-gray-100 px-3 rounded-md py-2' name="filter" id="filter">
@@ -90,7 +63,7 @@ const ManageBlogs = () => {
                 isPending ? <NoDataLoader /> :
                     blogs?.length > 0 ? <div className="grid md:grid-cols-2 lg:grid-cols-3  gap-y-8 gap-x-6 mt-8">
                         {
-                            blogs.map(blog => <ManageBlogCard key={blog._id} blog={blog} handleBlogDelete={handleBlogDelete} />)
+                            blogs.map(blog => <ManageBlogCard key={blog._id} blog={blog} />)
                         }
 
 
@@ -147,4 +120,4 @@ const ManageBlogs = () => {
     )
 }
 
-export default ManageBlogs
+export default MyBlogs
