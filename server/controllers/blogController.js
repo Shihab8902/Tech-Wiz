@@ -145,6 +145,25 @@ const getRelatedBlogs = async (req, res) => {
     }
 }
 
+//Get blog stats
+const getBlogStats = async (req, res) => {
+    try {
+        const result = await blogCollection.aggregate([
+            {
+                $group: {
+                    _id: "$category", // return the category name as _id
+                    total: { $sum: 1 }
+                }
+            }
+        ]).toArray();
+
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 
 //post blog
 const postBlog = async (req, res) => {
@@ -241,4 +260,4 @@ const deleteBlog = async (req, res) => {
     }
 }
 
-module.exports = { getBlog, getBlogsByEmail, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };
+module.exports = { getBlog, getBlogsByEmail, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };

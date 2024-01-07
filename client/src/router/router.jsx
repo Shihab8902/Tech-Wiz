@@ -16,6 +16,8 @@ import ManageBlogs from '../pages/Dashboard/Admin/Manage Blogs/ManageBlogs';
 import ManageUsers from '../pages/Dashboard/Admin/Manage Users/ManageUsers';
 import MyBlogs from '../pages/Dashboard/MyBlogs';
 import UpdateBlog from '../pages/Dashboard/UpdateBlog';
+import AuthorRequests from '../pages/Dashboard/Admin/Author/AuthorRequests';
+import Statistics from '../pages/Dashboard/Admin/Statistics/Statistics';
 
 
 const axiosPublic = useAxiosPublic();
@@ -85,9 +87,21 @@ export const router = createBrowserRouter([
                 </AdminRoute>
             },
             {
+                path: "/dashboard/statistics",
+                element: <AdminRoute>
+                    <Statistics />
+                </AdminRoute>
+            },
+            {
                 path: "/dashboard/manageUsers",
                 element: <AdminRoute>
                     <ManageUsers />
+                </AdminRoute>
+            },
+            {
+                path: "/dashboard/authorRequests",
+                element: <AdminRoute>
+                    <AuthorRequests />
                 </AdminRoute>
             }
         ]
