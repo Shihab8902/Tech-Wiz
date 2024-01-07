@@ -1,8 +1,8 @@
 const express = require("express");
-const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog, getBlogsByEmail, updateBlog, getBlogStats } = require("./controllers/blogController");
+const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog, getBlogsByEmail, updateBlog, getBlogStats, getBlogStatsForAuthor } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
-const { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser, getAllUsers } = require("./controllers/userController");
+const { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser, getAllUsers, getAuthorRequests, getOneAuthorRequest, postAuthorRequest } = require("./controllers/userController");
 const { generateToken } = require("./controllers/tokenController");
 const verifyToken = require("./middlewares/verifyToken");
 const verifyAuthor = require("./middlewares/verifyAuthor");
@@ -28,6 +28,7 @@ app.post("/blogs", verifyToken, verifyAuthor, postBlog);
 app.put("/updateView", updateBlogView);
 app.get("/relatedBlogs", getRelatedBlogs);
 app.get("/stats", getBlogStats);
+app.get("/authorStats", verifyToken, verifyAuthor, getBlogStatsForAuthor);
 app.put("/updateComments", verifyToken, updateBlogComments);
 app.put("/blog", verifyToken, verifyAuthor, updateBlog);
 app.delete("/blog", verifyToken, verifyAuthor, deleteBlog);
@@ -36,9 +37,12 @@ app.delete("/blog", verifyToken, verifyAuthor, deleteBlog);
 
 //User related apis
 app.get("/users", verifyToken, verifyAdmin, getAllUsers);
-app.get("/user", verifyToken, getUserByEmail);
+app.get("/user", getUserByEmail);
 app.get("/userRole", verifyToken, getUserRole);
 app.put("/updateUser", verifyToken, updateUser);
+app.get("/authRequest", verifyToken, getOneAuthorRequest);
+app.post("/authRequest", verifyToken, postAuthorRequest);
+app.post("/user", saveNewUser);
 
 
 

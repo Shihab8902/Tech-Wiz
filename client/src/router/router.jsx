@@ -18,6 +18,7 @@ import MyBlogs from '../pages/Dashboard/MyBlogs';
 import UpdateBlog from '../pages/Dashboard/UpdateBlog';
 import AuthorRequests from '../pages/Dashboard/Admin/Author/AuthorRequests';
 import Statistics from '../pages/Dashboard/Admin/Statistics/Statistics';
+import AuthorStats from '../pages/Dashboard/Author/AuthorStats';
 
 
 const axiosPublic = useAxiosPublic();
@@ -59,6 +60,12 @@ export const router = createBrowserRouter([
         </PrivateRoute>,
         children: [
             //Author routes
+            {
+                path: "/dashboard/authorStats",
+                element: <AuthorRoute>
+                    <AuthorStats />
+                </AuthorRoute>
+            },
             {
                 path: "/dashboard/compose",
                 element: <AuthorRoute>

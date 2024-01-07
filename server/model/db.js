@@ -28,7 +28,8 @@ const getModel = () => {
     const blogCollection = client.db("techwizDB").collection("blogs");
     const userCollection = client.db("techwizDB").collection("users");
     const subscriberCollection = client.db("techwizDB").collection("subscribers");
-    return { blogCollection, userCollection, subscriberCollection };
+    const authorRequestCollection = client.db("techwizDB").collection("author-requests");
+    return { blogCollection, userCollection, subscriberCollection, authorRequestCollection };
 };
 
 module.exports = getModel;

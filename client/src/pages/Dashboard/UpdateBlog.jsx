@@ -75,17 +75,19 @@ const UpdateBlog = () => {
 
 
         if (editorValue.length < 1) {
+            setIsUpdating(false);
             return toast.error("Content not found! ", {
                 classNames: {
                     toast: "bg-red-500"
                 }
             })
+
         }
 
         const imageHostingAPIKey = import.meta.env.VITE_IMAGE_HOSTING_API_KEY;
 
 
-        axiosPublic.post(`https://api.imgbb.com/1/upload?key=${imageHostingAPIKey}`, { image: modifiedImage }, {
+        axiosPublic.post(`https://api.imgbb.com/1/upload?key=${imageHostingAPIKey}`, { image: modifiedImage || image }, {
             headers: {
                 "content-Type": "multipart/form-data"
             }
@@ -166,7 +168,7 @@ const UpdateBlog = () => {
 
                 <div className="flex items-center gap-3">
                     <img src={image} className="w-12 h-12  rounded-lg " alt="" />
-                    <input type="file" onChange={handleImageChange} accept='image/*' className="file-input file-input-bordered w-full " required />
+                    <input type="file" onChange={handleImageChange} accept='image/*' className="file-input file-input-bordered w-full " />
                 </div>
 
                 <button type='submit' disabled={isUpdating} className='w-full btn bg-green-600 text-white py-3 rounded-lg mt-5'> {isUpdating ? <span className='flex gap-1 items-center'>Updating.... <span className="loading loading-spinner loading-xs"></span></span> : "Update"} </button>

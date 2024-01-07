@@ -9,18 +9,36 @@ import { FaPenNib } from "react-icons/fa";
 
 import "./dashboard.css"
 import UserProfile from "../../components/User Profile/UserProfile";
+import useGetUserRole from "../../hooks/useGetUserRole";
 
 const Dashboard = () => {
+
+    const { userRole } = useGetUserRole();
+
 
 
     const navLinks = <>
 
-        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/statistics"><BsFillBarChartFill /> Statistics</NavLink></li>
-        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/myblogs"><IoIosJournal /> My Blogs</NavLink></li>
-        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/compose"><FaPencilAlt /> Compose Blog</NavLink></li>
-        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/manageBlogs"><FaRegListAlt /> Manage Blogs</NavLink></li>
-        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/manageUsers"><FaUsers /> Manage Users</NavLink></li>
-        <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/authorRequests"><FaPenNib /> Author Requests</NavLink></li>
+        {
+            userRole === "admin" && <>
+
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/statistics"><BsFillBarChartFill /> Statistics</NavLink></li>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/myblogs"><IoIosJournal /> My Blogs</NavLink></li>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/compose"><FaPencilAlt /> Compose Blog</NavLink></li>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/manageBlogs"><FaRegListAlt /> Manage Blogs</NavLink></li>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/manageUsers"><FaUsers /> Manage Users</NavLink></li>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/authorRequests"><FaPenNib /> Author Requests</NavLink></li>
+            </>
+
+        }
+
+        {
+            userRole === "author" && <>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/authorStats"><BsFillBarChartFill /> Statistics</NavLink></li>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/myblogs"><IoIosJournal /> My Blogs</NavLink></li>
+                <li className="font-semibold text-lg mb-5">  <NavLink className="dashboard-link" to="/dashboard/compose"><FaPencilAlt /> Compose Blog</NavLink></li>
+            </>
+        }
 
 
     </>

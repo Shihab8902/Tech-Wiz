@@ -1,6 +1,6 @@
 const getModel = require("../model/db");
 
-const { userCollection } = getModel();
+const { userCollection, authorRequestCollection } = getModel();
 
 
 
@@ -108,6 +108,32 @@ const getSingleUser = async (req, res) => {
 
 
 
+//Get an author request
+const getOneAuthorRequest = async (req, res) => {
+    try {
+        const email = req.query.email;
+        const filter = { email: email };
+        const result = await authorRequestCollection.findOne(filter);
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//Post an author request
+const postAuthorRequest = async (req, res) => {
+    try {
+        const data = req.body;
+        const result = await authorRequestCollection.insertOne(data);
+        res.send(result); 0
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 //Add new user
 const saveNewUser = async (req, res) => {
@@ -149,4 +175,4 @@ const updateUser = async (req, res) => {
 }
 
 
-module.exports = { getAllUsers, getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser };
+module.exports = { getAllUsers, getUserByEmail, getOneAuthorRequest, saveNewUser, getUserRole, getSingleUser, updateUser, postAuthorRequest };

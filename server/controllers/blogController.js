@@ -164,6 +164,20 @@ const getBlogStats = async (req, res) => {
     }
 }
 
+//Get blog stats for author
+const getBlogStatsForAuthor = async (req, res) => {
+    try {
+        const email = req.query.email;
+        const filter = { publisher_email: email };
+        const projection = { title: 1, totalViews: 1, _id: 0 };
+        const result = await blogCollection.find(filter).project(projection).toArray();
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 
 //post blog
 const postBlog = async (req, res) => {
@@ -260,4 +274,4 @@ const deleteBlog = async (req, res) => {
     }
 }
 
-module.exports = { getBlog, getBlogsByEmail, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };
+module.exports = { getBlog, getBlogsByEmail, getBlogStatsForAuthor, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };

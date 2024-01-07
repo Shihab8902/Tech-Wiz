@@ -12,6 +12,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../context/AuthProvider';
 import Swal from 'sweetalert2';
 import useGetUserRole from '../../hooks/useGetUserRole';
+import useHandleAuthorRequest from '../../hooks/useHandleAuthorRequest';
 
 
 
@@ -21,6 +22,7 @@ const Nav = () => {
     const { user, userLogOut } = useContext(UserContext);
     const { userRole } = useGetUserRole();
     const navigate = useNavigate();
+    const authorRequestHandle = useHandleAuthorRequest();
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -82,9 +84,9 @@ const Nav = () => {
                                     <p className='text-center font-bold '>{user?.displayName || "User"}</p>
 
                                     {
-                                        userRole === "admin" ? <Link to="/dashboard" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Dashboard</Link>
-                                            : userRole === "author" ? <Link to="/dashboard" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Dashboard</Link> :
-                                                <Link to="/profile" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Profile</Link>
+                                        userRole === "admin" ? <Link to="/dashboard/statistics" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Dashboard</Link>
+                                            : userRole === "author" ? <Link to="/dashboard/authorStats" className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Dashboard</Link> :
+                                                <button onClick={() => authorRequestHandle()} className='text-center uppercase text-primary font-semibold my-3 hover:underline'>Become an author</button>
                                     }
 
 

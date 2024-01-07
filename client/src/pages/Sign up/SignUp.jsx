@@ -69,6 +69,7 @@ const SignUp = () => {
                     text: error.message,
                     icon: "error"
                 })
+                isSigningUp(false);
             })
     }
 
