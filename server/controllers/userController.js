@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const getModel = require("../model/db");
 
 const { userCollection, authorRequestCollection } = getModel();
@@ -107,34 +108,6 @@ const getSingleUser = async (req, res) => {
 }
 
 
-
-//Get an author request
-const getOneAuthorRequest = async (req, res) => {
-    try {
-        const email = req.query.email;
-        const filter = { email: email };
-        const result = await authorRequestCollection.findOne(filter);
-        res.send(result);
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-
-//Post an author request
-const postAuthorRequest = async (req, res) => {
-    try {
-        const data = req.body;
-        const result = await authorRequestCollection.insertOne(data);
-        res.send(result); 0
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-
-
-
 //Add new user
 const saveNewUser = async (req, res) => {
     try {
@@ -175,4 +148,75 @@ const updateUser = async (req, res) => {
 }
 
 
-module.exports = { getAllUsers, getUserByEmail, getOneAuthorRequest, saveNewUser, getUserRole, getSingleUser, updateUser, postAuthorRequest };
+//Get all author requests
+const getAllAuthorRequest = async (req, res) => {
+    try {
+        const result = await authorRequestCollection.find().toArray();
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+//Get an author request
+const getOneAuthorRequest = async (req, res) => {
+    try {
+        const email = req.query.email;
+        const filter = { email: email };
+        const result = await authorRequestCollection.findOne(filter);
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//Post an author request
+const postAuthorRequest = async (req, res) => {
+    try {
+        const data = req.body;
+        const result = await authorRequestCollection.insertOne(data);
+        res.send(result); 0
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//Promote user role
+const promoteUserRole = async (req, res) => {
+    try {
+        const email = req.query.email;
+        const role = req.query.role;
+        const filter = { email: email };
+        const newDoc = {
+            $set: {
+                role: role
+            }
+        }
+        const result = await userCollection.updateOne(filter, newDoc);
+        res.send(result);
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+//Delete user from author request
+const deleteUserFromAuthorRequest = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const filter = { _id: new ObjectId(id) };
+        const result = await authorRequestCollection.deleteOne(filter);
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getAllUsers, getUserByEmail, getOneAuthorRequest, deleteUserFromAuthorRequest, promoteUserRole, getAllAuthorRequest, saveNewUser, getUserRole, getSingleUser, updateUser, postAuthorRequest };

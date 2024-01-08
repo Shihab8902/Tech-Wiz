@@ -19,6 +19,7 @@ import UpdateBlog from '../pages/Dashboard/UpdateBlog';
 import AuthorRequests from '../pages/Dashboard/Admin/Author/AuthorRequests';
 import Statistics from '../pages/Dashboard/Admin/Statistics/Statistics';
 import AuthorStats from '../pages/Dashboard/Author/AuthorStats';
+import BlogPosts from '../components/BlogPosts/BlogPosts';
 
 
 const axiosPublic = useAxiosPublic();
@@ -36,6 +37,12 @@ export const router = createBrowserRouter([
                 path: "/blog/:id",
                 element: <BlogView />,
                 loader: ({ params }) => axiosPublic.get(`/blog/${params.id}`)
+            },
+            {
+                path: "/category/:category",
+                element: <PrivateRoute>
+                    <BlogPosts />
+                </PrivateRoute>
             },
             {
                 path: "/signup",

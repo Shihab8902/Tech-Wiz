@@ -57,7 +57,7 @@ const getBlogsByEmail = async (req, res) => {
 
         switch (filterValue) {
             case "all": {
-                const result = await blogCollection.find({ publisher_email: email }).skip(page * limit).limit(limit).toArray();
+                const result = await blogCollection.find({ publisher_email: email }).sort({ publish_date: -1 }).skip(page * limit).limit(limit).toArray();
                 return res.send(result);
             }
 
@@ -74,7 +74,7 @@ const getBlogsByEmail = async (req, res) => {
             }
         }
 
-        const result = await blogCollection.find({ publisher_email: email }).skip(page * limit).limit(limit).toArray();
+        const result = await blogCollection.find({ publisher_email: email }).skip(page * limit).sort({ publish_date: -1 }).limit(limit).toArray();
         res.send(result);
 
     }
@@ -179,6 +179,19 @@ const getBlogStatsForAuthor = async (req, res) => {
 }
 
 
+//Get use total blog
+const handleUserTotalBlogCount = async (req, res) => {
+    try {
+        const email = req.query.email;
+        const filter = { publisher_email: email };
+        const result = await blogCollection.countDocuments(filter);
+        res.send({ total: result });
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 //post blog
 const postBlog = async (req, res) => {
     try {
@@ -274,4 +287,86 @@ const deleteBlog = async (req, res) => {
     }
 }
 
-module.exports = { getBlog, getBlogsByEmail, getBlogStatsForAuthor, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };
+
+
+//Get blog by category
+const getBlogByCategory = async (req, res) => {
+    try {
+        const category = req.query.category;
+        const limit = req.query.limit;
+        const search = req.query.search;
+        const filterCondition = req.query.filter;
+
+
+
+
+        const filter = { category: category };
+
+        if (limit) {
+
+            if (search) {
+                const query = {
+                    $and: [
+                        { category: category },
+                        { title: { $regex: new RegExp(search, 'i') } }
+                    ]
+                };
+
+                console.log(query);
+
+                const result = await blogCollection.find(query).sort({ publish_date: -1 }).toArray();
+                return res.send(result);
+            }
+
+
+            switch (filterCondition) {
+                case "all": {
+                    const result = await blogCollection.find(filter).limit(parseInt(limit)).toArray();
+                    return res.send(result);
+                }
+
+                case "popular": {
+                    const result = await blogCollection.find(filter).limit(parseInt(limit)).sort({ totalViews: -1 }).toArray();
+                    return res.send(result);
+                }
+
+                case "new": {
+                    const result = await blogCollection.find(filter).limit(parseInt(limit)).sort({ publish_date: -1 }).toArray();
+                    return res.send(result);
+                }
+            }
+
+            const result = await blogCollection.find(filter).limit(parseInt(limit)).sort({ publish_date: -1 }).toArray();
+            return res.send(result);
+        }
+
+        const result = await blogCollection.find(filter).sort({ publish_date: -1 }).toArray();
+
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+//Get category blog count
+const getCategoryBlogCount = async (req, res) => {
+    try {
+        const category = req.query.category;
+
+        const filter = { category: category };
+        const result = await blogCollection.countDocuments(filter);
+        res.send({ total: result });
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
+
+module.exports = { getBlog, getBlogsByEmail, handleUserTotalBlogCount, getCategoryBlogCount, getBlogByCategory, getBlogStatsForAuthor, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };

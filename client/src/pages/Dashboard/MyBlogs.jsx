@@ -20,7 +20,7 @@ const MyBlogs = () => {
 
     // pagination
     const blogsPerPage = 6;
-    const { data: blogCount } = useGetPublic(["blogCount"], `/totalBlogs`);
+    const { data: blogCount } = useGetSecure(["blogCount", user?.email], `/userTotalBlog?email=${user?.email}`);
     const totalPages = Math.ceil(blogCount?.total / blogsPerPage) || 0;
     const [currentPage, setCurrentPage] = useState(0);
     const pages = [...Array(totalPages).keys()];

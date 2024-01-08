@@ -8,6 +8,7 @@ import Comments from './Comments';
 
 
 
+
 const BlogBody = ({ blog }) => {
     const { body, title, totalViews, _id } = blog;
     const axiosPublic = useAxiosPublic();
@@ -20,13 +21,17 @@ const BlogBody = ({ blog }) => {
 
     const cleanHTML = DOMPurify.sanitize(body);
 
+
+
     return <div>
         <Helmet>
             <title>{title}</title>
         </Helmet>
 
 
-        <div className='hyperlink text-justify' dangerouslySetInnerHTML={{ __html: cleanHTML }} />
+        <div className='hyperlink text-justify blog-container' dangerouslySetInnerHTML={{ __html: cleanHTML }} />
+
+
 
         <RelatedPosts blog={blog} />
         <Comments blog={blog} />

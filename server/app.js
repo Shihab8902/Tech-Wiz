@@ -1,8 +1,8 @@
 const express = require("express");
-const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog, getBlogsByEmail, updateBlog, getBlogStats, getBlogStatsForAuthor } = require("./controllers/blogController");
+const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog, getBlogsByEmail, updateBlog, getBlogStats, getBlogStatsForAuthor, handleUserTotalBlogCount, getBlogByCategory, getCategoryBlogCount } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
-const { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser, getAllUsers, getAuthorRequests, getOneAuthorRequest, postAuthorRequest } = require("./controllers/userController");
+const { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser, getAllUsers, getAuthorRequests, getOneAuthorRequest, postAuthorRequest, getAllAuthorRequest, promoteUserRole, deleteUserFromAuthorRequest } = require("./controllers/userController");
 const { generateToken } = require("./controllers/tokenController");
 const verifyToken = require("./middlewares/verifyToken");
 const verifyAuthor = require("./middlewares/verifyAuthor");
@@ -21,6 +21,7 @@ app.use(express.json());
 app.get("/blogs", getBlog);
 app.get("/myBlogs", verifyToken, verifyAuthor, getBlogsByEmail);
 app.get("/totalBlogs", getTotalBlogs);
+app.get("/userTotalBlog", verifyToken, verifyAuthor, handleUserTotalBlogCount);
 app.get("/blogs/mostViewed", getMostViewedBlogs);
 app.get("/blogs/recent", getLatestBlogs);
 app.get("/blog/:id", getSpecificBlog);
@@ -33,16 +34,23 @@ app.put("/updateComments", verifyToken, updateBlogComments);
 app.put("/blog", verifyToken, verifyAuthor, updateBlog);
 app.delete("/blog", verifyToken, verifyAuthor, deleteBlog);
 
+//Blog category related
+app.get("/blogByCategory", getBlogByCategory);
+app.get("/categoryBlogCount", getCategoryBlogCount);
+
 
 
 //User related apis
 app.get("/users", verifyToken, verifyAdmin, getAllUsers);
 app.get("/user", getUserByEmail);
+app.post("/user", saveNewUser);
 app.get("/userRole", verifyToken, getUserRole);
 app.put("/updateUser", verifyToken, updateUser);
 app.get("/authRequest", verifyToken, getOneAuthorRequest);
 app.post("/authRequest", verifyToken, postAuthorRequest);
-app.post("/user", saveNewUser);
+app.get("/authRequests", verifyToken, verifyAdmin, getAllAuthorRequest);
+app.put("/promoteUser", verifyToken, verifyAdmin, promoteUserRole);
+app.delete("/deleteAuthUser", verifyToken, verifyAdmin, deleteUserFromAuthorRequest);
 
 
 

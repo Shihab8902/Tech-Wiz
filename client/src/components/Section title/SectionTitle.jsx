@@ -5,7 +5,7 @@ const SectionTitle = ({ title }) => {
             <div className="mr-4">
                 <p className="text-xl uppercase font-bold text-gray-800">{title}</p>
             </div>
-            <div className="flex-grow border-t-2 border-gray-300"></div>
+            <div className="flex-1 border-t-2 border-gray-300"></div>
         </div>
     )
 

@@ -1,7 +1,60 @@
 .hyperlink a {
     color: blue !important;
+    font-weight: 500;
 }
 
 .hyperlink a:hover {
     text-decoration: underline;
+}
+
+pre {
+    background-color: black;
+    color: #00ff00;
+    padding: 40px 20px;
+}
+
+.blog-container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.blog-container h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.blog-container h3 {
+    font-size: 1.17rem;
+    font-weight: bold;
+}
+
+.blog-container h4 {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.blog-container h5 {
+    font-size: 0.83rem;
+    font-weight: bold;
+}
+
+.blog-container h6 {
+    font-size: 0.72rem;
+    font-weight: bold;
+}
+
+.blog-container ul li {
+    list-style-type: disc;
+    margin: 0 50px;
+    font-weight: 500;
+}
+
+.blog-container ol li {
+    list-style-type: decimal;
+    margin: 0 50px;
+    font-weight: 500;
+}
+
+.blog-container p {
+    font-weight: 500;
 }
