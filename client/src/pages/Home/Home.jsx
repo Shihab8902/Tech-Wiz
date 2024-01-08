@@ -1,4 +1,5 @@
 
+import Footer from '../../shared/Footer/Footer';
 import Nav from '../../shared/Nav/Nav'
 import SubNav from '../../shared/Nav/SubNav'
 import Banner from './Banner/Banner'
@@ -32,6 +33,8 @@ const Home = () => {
             <SectionDivider />
 
         </div>
+
+        <Footer />
 
 
 

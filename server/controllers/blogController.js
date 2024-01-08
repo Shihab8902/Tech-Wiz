@@ -397,8 +397,23 @@ const menuBlogCount = async (req, res) => {
 }
 
 
+//Get random blogs
+const getRandomBlogs = async (req, res) => {
+    try {
+        const result = await blogCollection.aggregate([
+            { $sample: { size: 5 } }
+        ]).toArray();
+
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 
 
 
-module.exports = { getBlog, getBlogsByEmail, handleUserTotalBlogCount, menuBlogCount, getCategoryBlogCount, getBlogByCategory, getBlogStatsForAuthor, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };
+
+
+module.exports = { getBlog, getBlogsByEmail, handleUserTotalBlogCount, getRandomBlogs, menuBlogCount, getCategoryBlogCount, getBlogByCategory, getBlogStatsForAuthor, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };

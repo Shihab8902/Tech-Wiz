@@ -20,6 +20,8 @@ import AuthorRequests from '../pages/Dashboard/Admin/Author/AuthorRequests';
 import Statistics from '../pages/Dashboard/Admin/Statistics/Statistics';
 import AuthorStats from '../pages/Dashboard/Author/AuthorStats';
 import BlogPosts from '../components/BlogPosts/BlogPosts';
+import About from '../pages/About/About';
+import Contact from '../pages/Contact/Contact';
 
 
 const axiosPublic = useAxiosPublic();
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <Profile />
                 </PrivateRoute>
+            },
+            {
+                path: "/about",
+                element: <About />
+            },
+            {
+                path: "/contact",
+                element: <Contact />
             }
         ]
     },

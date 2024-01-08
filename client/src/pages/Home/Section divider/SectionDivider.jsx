@@ -19,6 +19,7 @@ const SectionDivider = () => {
             <TechNews />
             <ProgrammingAndDevelopment />
             <GamingAndEntertainment />
+
         </div>
 
         <div>
