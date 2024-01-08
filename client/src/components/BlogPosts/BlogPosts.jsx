@@ -13,9 +13,10 @@ const BlogPosts = () => {
     const [searchString, setSearchString] = useState('');
     const [limit, setLimit] = useState(20);
 
-    console.log(filter)
-
     const searchRef = createRef();
+
+
+    const { data: totalBlogs } = useGetPublic(["totalBlogCategoryCount", category], `/categoryBlogCount?category=${category}`);
 
     const { data: blogs, isPending, refetch } = useGetPublic([category, "all-blog-posts"], `/blogByCategory?category=${category}&search=${searchString}&filter=${filter}&limit=${limit}`);
 
@@ -79,8 +80,8 @@ const BlogPosts = () => {
         </div>
 
 
-        <div className="my-20 text-center">
-            <button className="text-center bg-green-600 text-white btn hover:text-black font-semibold px-10 py-3">Show more</button>
+        <div className={`my-20  hidden text-center ${!(totalBlogs?.count <= blogs?.length || blogs?.length <= 20) ? "block" : "hidden"} `}>
+            <button onClick={() => setLimit(limit + 20)} className="text-center bg-green-600 text-white btn hover:text-black font-semibold px-10 py-3">Show more</button>
         </div>
 
 

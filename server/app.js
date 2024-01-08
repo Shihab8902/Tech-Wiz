@@ -1,5 +1,5 @@
 const express = require("express");
-const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog, getBlogsByEmail, updateBlog, getBlogStats, getBlogStatsForAuthor, handleUserTotalBlogCount, getBlogByCategory, getCategoryBlogCount } = require("./controllers/blogController");
+const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog, getBlogsByEmail, updateBlog, getBlogStats, getBlogStatsForAuthor, handleUserTotalBlogCount, getBlogByCategory, getCategoryBlogCount, menuBlogCount } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
 const { getUserByEmail, saveNewUser, getUserRole, getSingleUser, updateUser, getAllUsers, getAuthorRequests, getOneAuthorRequest, postAuthorRequest, getAllAuthorRequest, promoteUserRole, deleteUserFromAuthorRequest } = require("./controllers/userController");
@@ -37,7 +37,7 @@ app.delete("/blog", verifyToken, verifyAuthor, deleteBlog);
 //Blog category related
 app.get("/blogByCategory", getBlogByCategory);
 app.get("/categoryBlogCount", getCategoryBlogCount);
-
+app.get("/menuBlogCount", menuBlogCount);
 
 
 //User related apis

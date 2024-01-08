@@ -364,9 +364,41 @@ const getCategoryBlogCount = async (req, res) => {
     }
 }
 
+//Get blog count for menu
+const menuBlogCount = async (req, res) => {
+    try {
+        const result = await blogCollection.aggregate([
+            {
+                $group: {
+                    _id: "$category",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    categoryName: "$_id",
+                    totalCount: "$count",
+                    _id: 0
+                }
+            }
+        ]).toArray();
+
+        // Convert the array to a single object
+        const categoriesObject = result.reduce((acc, category) => {
+            acc[category.categoryName] = category.totalCount;
+            return acc;
+        }, {});
+
+        res.send(categoriesObject);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 
 
 
 
-module.exports = { getBlog, getBlogsByEmail, handleUserTotalBlogCount, getCategoryBlogCount, getBlogByCategory, getBlogStatsForAuthor, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };
+
+module.exports = { getBlog, getBlogsByEmail, handleUserTotalBlogCount, menuBlogCount, getCategoryBlogCount, getBlogByCategory, getBlogStatsForAuthor, getBlogStats, postBlog, getMostViewedBlogs, getSpecificBlog, updateBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog };
