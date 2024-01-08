@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const RecentPostCard = ({ blog }) => {
     const { image, title, category, publisher, publish_date, _id } = blog;
-    // console.log(blog)
+
 
 
     return <Link to={`/blog/${_id}`}>

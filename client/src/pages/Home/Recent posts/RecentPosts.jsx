@@ -10,7 +10,7 @@ const RecentPosts = () => {
 
 
 
-    return <div>
+    return <div >
         <SectionTitle title="Recent posts" />
 
 

@@ -21,7 +21,7 @@ async function run() {
         console.log(error);
     }
 }
-run();
+
 
 
 const getModel = () => {
@@ -32,4 +32,4 @@ const getModel = () => {
     return { blogCollection, userCollection, subscriberCollection, authorRequestCollection };
 };
 
-module.exports = getModel;
+module.exports = { getModel, run };

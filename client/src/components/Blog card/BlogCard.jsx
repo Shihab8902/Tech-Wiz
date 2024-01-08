@@ -1,11 +1,21 @@
 import { GoDotFill } from "react-icons/go";
 import { Link, useNavigate } from "react-router-dom";
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from "react";
+
 const BlogCard = ({ blog }) => {
     const { image, category, title, publisher, publish_date, _id } = blog;
 
+    useEffect(() => {
+        AOS.init({
+            duration: 800
+        });
+    }, [])
+
     return <Link to={`/blog/${_id}`}>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer" data-aos="fade-up">
 
             <div className="sm:max-h-[176px] md:max-h-[450px] lg:h-40 overflow-hidden">
                 <img className="w-full h-full hover:scale-105 transition-all duration-500" src={image} alt="Image Unavailable" />

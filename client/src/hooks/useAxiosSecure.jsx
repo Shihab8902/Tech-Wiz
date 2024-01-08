@@ -4,7 +4,7 @@ import { UserContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const axiosSecure = axios.create({
-    baseURL: "http://localhost:9000"
+    baseURL: "https://techwiz-one.vercel.app"
 })
 
 const useAxiosSecure = () => {

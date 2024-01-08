@@ -6,7 +6,7 @@ import { FaUsers } from "react-icons/fa";
 import { IoIosJournal } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaPenNib } from "react-icons/fa";
-
+import Helmet from 'react-helmet';
 import "./dashboard.css"
 import UserProfile from "../../components/User Profile/UserProfile";
 import useGetUserRole from "../../hooks/useGetUserRole";
@@ -51,6 +51,11 @@ const Dashboard = () => {
 
 
     return <div className="drawer lg:drawer-open bg-gray-100 container mx-auto">
+
+        <Helmet>
+            <title>TechWiz | Dashboard</title>
+        </Helmet>
+
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content overflow-x-auto">
             {/* Drawer button */}

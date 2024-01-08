@@ -29,7 +29,7 @@ const NewsLetter = () => {
 
         axiosPublic.post(`/subscriber`, { email })
             .then(res => {
-                console.log(res.data)
+
                 if (res.data?.insertedId) {
                     setIsExploding(true);
                     Swal.fire({

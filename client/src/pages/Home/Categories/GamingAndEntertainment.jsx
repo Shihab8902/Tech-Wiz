@@ -13,7 +13,7 @@ const GamingAndEntertainment = () => {
 
 
 
-  return <div className="mt-10">
+  return <div className="mt-10" id="gaming-and-entertainment">
     <CommonSectionTitle title="Gaming and Entertainment" category="gaming and entertainment" />
 
     <div >

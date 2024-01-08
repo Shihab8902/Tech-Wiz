@@ -8,7 +8,7 @@ const HowTo = () => {
     const { data: blogs, isPending } = useGetPublic(["how-to"], `/blogByCategory?category=how to&limit=3`);
 
 
-    return <div className="mt-10">
+    return <div className="mt-10" id="how-to">
         <CommonSectionTitle title="How to?" category="how to" />
 
         <div >

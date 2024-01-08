@@ -5,4 +5,9 @@
 
 * {
     font-family: 'Manrope', sans-serif;
+
+}
+
+body {
+    overflow-x: hidden;
 }

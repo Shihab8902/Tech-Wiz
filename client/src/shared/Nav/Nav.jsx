@@ -112,32 +112,32 @@ const Nav = () => {
                         <ul>
 
                             <li className='text-white text-lg  py-5 border-b border-slate-700'>
-                                <Link className="hover:underline " to="/">Home</Link>
+                                <Link className="hover:underline " onClick={toggleMenu} to="/">Home</Link>
                             </li>
 
                             <li tabIndex={0} className='text-white text-lg  py-5 border-b border-slate-700 '>
                                 <details>
                                     <summary className='cursor-pointer'>Categories</summary>
                                     <ul className="ml-10 pl-3 ">
-                                        <li className='text-white text-lg list-disc  py-5 border-b border-slate-700'><Link className="hover:underline" to="/gadgets-and-electronics">Gadgets and Electronics</Link></li>
-                                        <li className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/software-and-apps">Software and Apps</Link></li>
-                                        <li className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/how-to">How to?</Link></li>
-                                        <li className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/tech-news">Tech News</Link></li>
-                                        <li className='text-white   list-disc py-5 border-b text-base border-slate-700'><Link className="hover:underline" to="/programming-and-development">Programming and Development</Link></li>
-                                        <li className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/gaming-and-entertainment">Gaming and Entertainment</Link></li>
+                                        <li onClick={toggleMenu} className='text-white text-lg list-disc  py-5 border-b border-slate-700'><Link className="hover:underline" to="/category/gadgets and electronics">Gadgets and Electronics</Link></li>
+                                        <li onClick={toggleMenu} className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/category/software and apps">Software and Apps</Link></li>
+                                        <li onClick={toggleMenu} className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/category/how to">How to?</Link></li>
+                                        <li onClick={toggleMenu} className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/category/tech news">Tech News</Link></li>
+                                        <li onClick={toggleMenu} className='text-white   list-disc py-5 border-b text-base border-slate-700'><Link className="hover:underline" to="/category/programming and development">Programming and Development</Link></li>
+                                        <li onClick={toggleMenu} className='text-white text-lg  list-disc py-5 border-b border-slate-700'><Link className="hover:underline" to="/category/gaming and entertainment">Gaming and Entertainment</Link></li>
                                     </ul>
                                 </details>
                             </li>
 
-                            <li className='text-white text-lg  py-5 border-b border-slate-700'>
+                            <li onClick={toggleMenu} className='text-white text-lg  py-5 border-b border-slate-700'>
                                 <Link className="hover:underline " to="/about">About Us</Link>
                             </li>
 
-                            <li className='text-white text-lg  py-5 border-b border-slate-700'>
+                            <li onClick={toggleMenu} className='text-white text-lg  py-5 border-b border-slate-700'>
                                 <Link className="hover:underline " to="/contact">Contacts</Link>
                             </li>
 
-                            <li className='text-white text-lg  py-5 border-b border-slate-700'>
+                            <li onClick={toggleMenu} className='text-white text-lg  py-5 border-b border-slate-700'>
                                 <Link className="hover:underline " to="/advertise">Advertise</Link>
                             </li>
                         </ul>

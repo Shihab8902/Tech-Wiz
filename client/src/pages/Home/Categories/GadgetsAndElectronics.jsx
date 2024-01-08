@@ -5,10 +5,15 @@ import CommonSectionTitle from "../../../components/Section title/CommonSectionT
 
 
 
+
+
 const GadgetsAndElectronics = () => {
+
+
+
     const { data: blogs, isPending } = useGetPublic(["gadgets-and-electronics"], `/blogByCategory?category=gadgets and electronics&limit=3`);
 
-    return <div>
+    return <div id="gadgetAndElectronics">
 
         <CommonSectionTitle title="Gadgets and Electronics" category="gadgets and electronics" />
 

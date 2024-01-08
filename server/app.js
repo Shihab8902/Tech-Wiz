@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const { getBlog, postBlog, getMostViewedBlogs, getSpecificBlog, getLatestBlogs, updateBlogView, getRelatedBlogs, updateBlogComments, getTotalBlogs, deleteBlog, getBlogsByEmail, updateBlog, getBlogStats, getBlogStatsForAuthor, handleUserTotalBlogCount, getBlogByCategory, getCategoryBlogCount, menuBlogCount, getRandomBlogs } = require("./controllers/blogController");
 const app = express();
 const cors = require("cors");
@@ -8,14 +9,13 @@ const verifyToken = require("./middlewares/verifyToken");
 const verifyAuthor = require("./middlewares/verifyAuthor");
 const { getAllSubscriber, getIndividualSubscriber, addNewSubscriber } = require("./controllers/subscriberController");
 const verifyAdmin = require("./middlewares/verfiyAdmin");
+const port = process.env.PORT || 9000;
+const { run } = require("./model/db");
 
 
 //Middlewares
 app.use(cors());
 app.use(express.json());
-
-
-
 
 //Blog related apis
 app.get("/blogs", getBlog);
@@ -60,7 +60,7 @@ app.post("/jwt", generateToken);
 
 
 //Subscriber related apis
-app.get("/subscribers", getAllSubscriber);      //TODO: make this route admin protective
+app.get("/subscribers", verifyAdmin, getAllSubscriber);
 app.get("/subscriber", getIndividualSubscriber);
 app.post("/subscriber", addNewSubscriber);
 
@@ -72,4 +72,16 @@ app.get("/", (req, res) => {
 });
 
 
-module.exports = app;
+
+
+const listenServer = async () => {
+    await run();
+    app.listen(port, () => {
+        console.log(`server is running at http://localhost:${port}`);
+    });
+}
+
+listenServer();
+
+
+

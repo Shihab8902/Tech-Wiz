@@ -1,4 +1,4 @@
-const getModel = require("../model/db");
+const { getModel } = require("../model/db");
 const { userCollection } = getModel();
 
 const verifyAdmin = async (req, res, next) => {

@@ -9,7 +9,7 @@ const SoftwareAndApps = () => {
     const { data: blogs, isPending } = useGetPublic(["software-and-apps"], `/blogByCategory?category=software and apps&limit=3`);
 
 
-    return <div className="mt-10">
+    return <div className="mt-10" id="software-and-apps">
         <CommonSectionTitle title="Software and Apps" category="software and apps" />
 
         <div>

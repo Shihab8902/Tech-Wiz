@@ -22,6 +22,8 @@ import AuthorStats from '../pages/Dashboard/Author/AuthorStats';
 import BlogPosts from '../components/BlogPosts/BlogPosts';
 import About from '../pages/About/About';
 import Contact from '../pages/Contact/Contact';
+import Advertise from '../pages/Advertise/Advertise';
+import Error from '../pages/Error/Error';
 
 
 const axiosPublic = useAxiosPublic();
@@ -30,6 +32,7 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
+        errorElement: <Error />,
         children: [
             {
                 path: "/",
@@ -67,6 +70,10 @@ export const router = createBrowserRouter([
             {
                 path: "/contact",
                 element: <Contact />
+            },
+            {
+                path: "/advertise",
+                element: <Advertise />
             }
         ]
     },
@@ -75,6 +82,7 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
             <Dashboard />
         </PrivateRoute>,
+        errorElement: <Error />,
         children: [
             //Author routes
             {

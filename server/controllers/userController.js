@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongodb");
-const getModel = require("../model/db");
+const { getModel } = require("../model/db");
 
 const { userCollection, authorRequestCollection } = getModel();
 

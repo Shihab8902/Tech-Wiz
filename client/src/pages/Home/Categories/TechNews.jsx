@@ -9,7 +9,7 @@ const TechNews = () => {
 
 
 
-    return <div className="mt-10">
+    return <div className="mt-10" id="tech-news">
         <CommonSectionTitle title="Tech News?" category="tech news" />
 
         <div >
